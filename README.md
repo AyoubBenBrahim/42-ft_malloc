@@ -82,3 +82,7 @@ word size here = 4 bytes = 32 bits = x/1wx = 0x00000000
 (gdb) x/4wx 0x55b28adc8260
 0x55b28adc8260:	0x41414141	0x41414141	0x00000041	0x00000000
 ```# 42-ft_malloc
+
+
+
+`FTSE: we can solve any prob by introducing an extra lvl of indirection = MMU in this case`
