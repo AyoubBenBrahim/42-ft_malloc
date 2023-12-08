@@ -1,3 +1,6 @@
+design a memory allocator
+
+
 the program break is the first location after the end of the uninitialized data segment
 
 This is done via the brk() system call, which changes the point where the data segment "breaks"/ends.
@@ -76,13 +79,105 @@ char* str = (char*) malloc(10);
 ```
 heap
 
-word size here = 4 bytes = 32 bits = x/1wx = 0x00000000
+1 word size here = 4 bytes = 32 bits = x/1wx = 0x00000000
 
 ```
 (gdb) x/4wx 0x55b28adc8260
 0x55b28adc8260:	0x41414141	0x41414141	0x00000041	0x00000000
-```# 42-ft_malloc
+```
 
 
 
-`FTSE: we can solve any prob by introducing an extra lvl of indirection = MMU in this case`
+```
+FTSE: we can solve any prob by introducing an extra lvl of indirection = MMU in this case
+```
+
+watch Chris Kanich's playlist on youtube on Systems
+
+```
+ptr = malloc(Z)
+
+ptr - 1 = X
+
+X - (4 * 2Headers) = Z   (Z is the size of the block) => malloc(Z)
+```
+
+
+```
+char *ptr1 = (char *)malloc(10);
+memset(ptr1, 'A', 10);
+
+char *ptr2 = (char *)malloc(15);
+memset(ptr2, 'B', 15);
+
+   0x0000561d9a2bf172 <+13>:    callq  0x561d9a2bf060 <malloc@plt>
+=> 0x0000561d9a2bf177 <+18>:    mov    %rax,-0x8(%rbp)
+
+(gdb) i r $rax
+rax            0x561d9a9a6260      94685147849312
+(gdb) x/40wx 0x561d9a9a6260 - 8
+0x561d9a9a6258: 0x00000021      0x00000000      0x00000000      0x00000000
+0x561d9a9a6268: 0x00000000      0x00000000      0x00000000      0x00000000
+
+p (0x21 - 1)/4 = 8 words
+```
+
+```
+0x561d9a9a6258: 0x00000021      0x00000000      0x41414141      0x41414141
+0x561d9a9a6268: 0x00004141      0x00000000      0x00000000      0x00000000
+0x561d9a9a6278: 0x00000411      0x00000000      0x6f6c6c41      0x65746163
+
+(gdb) x/wx 0x561d9a9a6258+(0x21-1)
+0x561d9a9a6278: 0x00000411
+
+tail of the first allocation = 0x561d9a9a6278 - 4 = 0x561d9a9a6274
+
+head of the second allocation = 0x561d9a9a6274 + 0x411 = 0x561d9a9a6685
+
+(gdb) x/4wx 0x561d9a9a6274+0x411
+0x561d9a9a6685: 0x21000000      0x00000000      0x42000000      0x42424242
+
+```
+
+
+
+```
+between the two allocations
+
+Breakpoint 2, 0x000055f29442a181 in main ()
+(gdb) x/12wx 0x55f296090260 - 8
+0x55f296090258: 0x00000021      0x00000000      0x41414141      0x41414141
+0x55f296090268: 0x00004141      0x00000000      0x00000000      0x00000000
+0x55f296090278: 0x00020d91      0x00000000      0x00000000      0x00000000
+(gdb) c
+Continuing.
+
+Breakpoint 3, 0x000055f29442a18b in main ()
+(gdb) x/12wx 0x55f296090260 - 8
+0x55f296090258: 0x00000021      0x00000000      0x41414141      0x41414141
+0x55f296090268: 0x00004141      0x00000000      0x00000000      0x00000000
+0x55f296090278: 0x00000021      0x00000000      0x00000000      0x00000000
+```
+
+```
+(gdb) x/20wx 0x55f296090258
+0x55f296090258: 0x00000021      0x00000000      0x41414141      0x41414141
+0x55f296090268: 0x00004141      0x00000000      0x00000000      0x00000000
+0x55f296090278: 0x00000021      0x00000000      0x42424242      0x42424242
+0x55f296090288: 0x42424242      0x00424242      0x00000000      0x00000000
+0x55f296090298: 0x00020d71      0x00000000      0x00000000      0x00000000
+(gdb) x/20wx 0x55f296090258+0x20
+0x55f296090278: 0x00000021      0x00000000      0x42424242      0x42424242
+0x55f296090288: 0x42424242      0x00424242      0x00000000      0x00000000
+0x55f296090298: 0x00020d71      0x00000000      0x00000000      0x00000000
+0x55f2960902a8: 0x00000000      0x00000000      0x00000000      0x00000000
+0x55f2960902b8: 0x00000000      0x00000000      0x00000000      0x00000000
+(gdb) x/20wx 0x55f296090258+0x20+0x20
+0x55f296090298: 0x00020d71      0x00000000      0x00000000      0x00000000
+0x55f2960902a8: 0x00000000      0x00000000      0x00000000      0x00000000
+0x55f2960902b8: 0x00000000      0x00000000      0x00000000      0x00000000
+0x55f2960902c8: 0x00000000      0x00000000      0x00000000      0x00000000
+0x55f2960902d8: 0x00000000      0x00000000      0x00000000      0x00000000
+```
+
+0x00020d71 marks the end of the heap

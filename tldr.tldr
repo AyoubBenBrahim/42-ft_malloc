@@ -66,9 +66,9 @@
     {
       "id": "pointer:pointer",
       "typeName": "pointer",
-      "x": -26.983883172847186,
-      "y": 186.76741885137494,
-      "lastActivityTimestamp": 1701944923798,
+      "x": -203.3471571780592,
+      "y": 646.5127110608825,
+      "lastActivityTimestamp": 1701950639481,
       "meta": {}
     },
     {
@@ -89,9 +89,7 @@
     {
       "editingShapeId": null,
       "croppingShapeId": null,
-      "selectedShapeIds": [
-        "shape:Vmbmq9NmhPBcwCTSvFf7g"
-      ],
+      "selectedShapeIds": [],
       "hoveredShapeId": null,
       "erasingShapeIds": [],
       "hintingShapeIds": [],
@@ -20246,6 +20244,81 @@
       },
       "parentId": "page:page",
       "index": "b0h",
+      "typeName": "shape"
+    },
+    {
+      "x": 573.4565182289234,
+      "y": 273.519999770744,
+      "rotation": 0,
+      "isLocked": false,
+      "opacity": 1,
+      "meta": {},
+      "id": "shape:2KYB54C4kB3wRJsPAZ-y3",
+      "type": "geo",
+      "props": {
+        "w": 114.37336617840559,
+        "h": 41.63690626462346,
+        "geo": "rectangle",
+        "color": "black",
+        "labelColor": "black",
+        "fill": "none",
+        "dash": "draw",
+        "size": "m",
+        "font": "draw",
+        "text": "",
+        "align": "middle",
+        "verticalAlign": "middle",
+        "growY": 0,
+        "url": ""
+      },
+      "parentId": "page:page",
+      "index": "b0i",
+      "typeName": "shape"
+    },
+    {
+      "x": 573.7148265895639,
+      "y": 279.37159204288173,
+      "rotation": 0,
+      "isLocked": false,
+      "opacity": 1,
+      "meta": {},
+      "id": "shape:dFZ8TLvbHDHhsk2EZK7dg",
+      "type": "text",
+      "props": {
+        "color": "black",
+        "size": "m",
+        "w": 101.27668762207031,
+        "text": "L1 cache",
+        "font": "draw",
+        "align": "middle",
+        "autoSize": true,
+        "scale": 1
+      },
+      "parentId": "page:page",
+      "index": "b0j",
+      "typeName": "shape"
+    },
+    {
+      "x": 294.5830834827532,
+      "y": 208.814777078828,
+      "rotation": 0,
+      "isLocked": false,
+      "opacity": 1,
+      "meta": {},
+      "id": "shape:EwUJ9i6Vqpl5mc8vVFioq",
+      "type": "text",
+      "props": {
+        "color": "black",
+        "size": "m",
+        "w": 71.00867462158203,
+        "text": "cache",
+        "font": "draw",
+        "align": "middle",
+        "autoSize": true,
+        "scale": 1
+      },
+      "parentId": "page:page",
+      "index": "b0k",
       "typeName": "shape"
     }
   ]
