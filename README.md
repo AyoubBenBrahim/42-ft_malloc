@@ -1,6 +1,39 @@
 design a memory allocator
 
 
+```
+Virtual memory is a memory management technique that provides each process with its own isolated address space, 
+allowing it to operate as if it has access to a large, contiguous block of memory. However, the physical memory (RAM) available to the system may be limited.
+```
+
+```
+Each process in a multi-tasking OS runs in its own memory sandbox.
+ This sandbox is the virtual address space, which in 32-bit mode is always a 4GB block of memory addresses.
+These virtual addresses are mapped to physical memory by page tables, which are maintained by the operating
+system kernel and consulted by the processor. Each process has its own set of page tables, but there is a catch.
+ Once virtual addresses are enabled, they apply to all software running in the machine, including the kernel itself.
+
+ kernel space is constantly present and maps the same physical memory in all processes. 
+```
+
+
+PCB (Process Control Block) is a data structure that contains information about a process in the OS. https://youtu.be/4s2MKuVYKV8
+
+{PID, PC, SP, registers, MMU, open files, etc.}
+
+task_struct is the name of the PCB in Linux.
+
+
+```
+The 4GB virtual address space is divided into pages.
+x86 processors in 32-bit mode support page sizes of 4KB, 2MB, and 4MB.
+Both Linux and Windows map the user portion of the virtual address space using 4KB pages.
+Bytes 0-4095 fall in page 0, bytes 4096-8191 fall in page 1, and so on. The size of a VMA must be a multiple of page size
+```
+
+
+
+
 the program break is the first location after the end of the uninitialized data segment
 
 This is done via the brk() system call, which changes the point where the data segment "breaks"/ends.
