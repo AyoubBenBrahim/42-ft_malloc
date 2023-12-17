@@ -214,3 +214,54 @@ Breakpoint 3, 0x000055f29442a18b in main ()
 ```
 
 0x00020d71 marks the end of the heap
+
+
+======================== some more digging using Pwndbg ========================
+
+after malloc(10)
+
+```
+pwndbg> heap
+Allocated chunk | PREV_INUSE
+Addr: 0x555b76fdd000
+Size: 0x250 (with flag bits: 0x251)
+
+Allocated chunk | PREV_INUSE
+Addr: 0x555b76fdd250
+Size: 0x20 (with flag bits: 0x21)
+
+Top chunk | PREV_INUSE
+Addr: 0x555b76fdd270
+Size: 0x20d90 (with flag bits: 0x20d91)
+```
+
+```
+pwndbg> x/10wx 0x555b76fdd250
+0x555b76fdd250:	0x00000000	0x00000000	0x00000021	0x00000000
+0x555b76fdd260:	0x00000000	0x00000000	0x00000000	0x00000000
+```
+
+after first memset(ptr1, 'A', 10);
+
+```
+pwndbg> arena 0x555b76fdd250
+{
+  mutex = 0,
+  flags = 0,
+  have_fastchunks = 33,
+  fastbinsY = {0x4141414141414141, 0x4141, 0x0, 0x20d91, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},
+  top = 0x0,
+  last_remainder = 0x0,
+  bins = {0x0 <repeats 254 times>},
+  binmap = {0, 0, 0, 0},
+  next = 0x0,
+  next_free = 0x0,
+  attached_threads = 0,
+  system_mem = 0,
+  max_system_mem = 0,
+}
+
+pwndbg> x/10wx 0x555b76fdd250
+0x555b76fdd250:	0x00000000	0x00000000	0x00000021	0x00000000
+0x555b76fdd260:	0x41414141	0x41414141	0x00004141	0x00000000
+```

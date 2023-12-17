@@ -1,0 +1,3 @@
+
+malloc_consolidate();
+```

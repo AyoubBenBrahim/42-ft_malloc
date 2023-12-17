@@ -47,8 +47,7 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 RUN wget https://github.com/pwndbg/pwndbg/releases/download/2023.07.17-pkgs/pwndbg_2023.07.17_amd64.deb \
     && dpkg -i pwndbg_2023.07.17_amd64.deb
 
-# Switch to Zsh
-SHELL ["/bin/zsh", "-c"]
+RUN /bin/zsh -c "source ~/.zshrc"
 
 CMD ["tail", "-f", "/dev/null"]
 
