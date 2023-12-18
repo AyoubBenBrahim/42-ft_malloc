@@ -28,3 +28,14 @@ By adhering to alignment requirements, programmers can ensure the correctness, p
 
 If you have any further questions, please, let me know!
 ```
+
+the nearest greater or equal multiple of four:
+
+#define align4(x) (((((x)-1)>>2)<<2)+4)
+
+this trick is explained in the [pdf](./Marwan_Burelle.pdf)
+
+
+better malloc project:
+
+Implementing a memory allocator https://github.com/kishan811/Better-Malloc
