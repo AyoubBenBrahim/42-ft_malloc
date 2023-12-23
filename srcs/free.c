@@ -80,17 +80,17 @@ void if_last_bin_free_arena(t_bin* bin)
 }
 
 void my_free(void* ptr) {
-  if (!ptr) {
-    return; // Ignore NULL pointers
-  }
+//   if (!ptr) {
+//     return; // Ignore NULL pointers
+//   }
 
-  t_bin* bin = (t_bin*)((char*)ptr - sizeof(t_bin));
-  bin->is_free = TRUE;
+//   t_bin* bin = (t_bin*)((char*)ptr - sizeof(t_bin));
+//   bin->is_free = TRUE;
 
-  // Coalesce adjacent free bins
-  t_arena* arena = (t_arena*)((char*)bin - sizeof(t_arena));
-  coalesce_bins(arena, (t_bin*)((char*)arena + sizeof(t_arena)));
+//   // Coalesce adjacent free bins
+//   t_arena* arena = (t_arena*)((char*)bin - sizeof(t_arena));
+//   coalesce_bins(arena, (t_bin*)((char*)arena + sizeof(t_arena)));
 
-    // If the bin is the last bin in the arena, check if the arena is empty
-    if_last_bin_free_arena(bin);
+//     // If the bin is the last bin in the arena, check if the arena is empty
+//     if_last_bin_free_arena(bin);
 }

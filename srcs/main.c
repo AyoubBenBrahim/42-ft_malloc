@@ -9,18 +9,19 @@
 
 int main() {
     // init_arena();
-    char* ptr = (char*)my_malloc(10);
-    // ptr[0] = 'H';
-    // ptr[1] = 'e';
-    // ptr[2] = 'l';
-    // ptr[3] = 'l';
-    // ptr[4] = 'o';
-    // ptr[5] = '\0';
+    // char* ptr = (char*)my_malloc(10);
 
-    memset(ptr, 'A', 10);
+   for (int i = 1; i < 50; i++)
+   {
+        char* ptr = (char*)my_malloc(i);
+        memset(ptr, 'A', i);
+        printf(" p = %p\n", &ptr);
+   }
 
-    printf(" p = %p\n", &ptr);
-    printf("%s\n", ptr);
+    // memset(ptr, 'B', 10);
+
+    // printf(" p = %p\n", &ptr);
+    // printf("%s\n", ptr);
     // free(ptr);
     return 0;
 }

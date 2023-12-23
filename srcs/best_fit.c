@@ -1,4 +1,5 @@
 # include "../inc/malloc.h"
+#include <stdio.h>
 
 // Function to split a bin if it is large enough
 void split_bin(t_bin* bin, size_t size) { // refer to Marwan Burelle's pdf p 10
@@ -59,7 +60,7 @@ t_arena* find_best_fit_arena(t_bins_type binType, size_t size)
     size_t best_fit_size = -1;
 
     while (curr_arena) {
-        if (curr_arena->bin_type == binType && curr_arena->free_size >= size) {
+        if (curr_arena->bin_type == binType && curr_arena->free_size >= size && !curr_arena->free_size) {
             if (curr_arena->free_size == size) {
                 return curr_arena;
             }
@@ -80,7 +81,7 @@ t_bin* find_best_fit_bin(t_arena* arena, size_t size)
         return NULL;
     }
 
-    t_bin* curr_bin = (t_bin*)((char*)arena + sizeof(t_arena));
+    t_bin* curr_bin = (t_bin*)((void*)arena + sizeof(t_arena));
     t_bin* best_fit_bin = NULL;
     size_t best_fit_size = -1;
 
@@ -100,11 +101,19 @@ t_bin* find_best_fit_bin(t_arena* arena, size_t size)
     return best_fit_bin;
 }
 
-t_bin* find_best_fit(t_bins_type binType, size_t size, t_arena** arenaa)
+t_bin* find_best_fit(t_bins_type binType, size_t size)
 {
     t_arena* arena = find_best_fit_arena(binType, size);
     t_bin* best_fit_bin = find_best_fit_bin(arena, size);
 
-    *arenaa = arena;
+    if (arena && best_fit_bin) {
+        arena->free_size -= (size + sizeof(t_bin));
+        best_fit_bin->is_free = FALSE;
+        if (arena->free_size <= 0) {
+            // arena->is_full = TRUE;
+            printf("** arena is full ** \n");
+        }
+    }
+
     return best_fit_bin;
 }

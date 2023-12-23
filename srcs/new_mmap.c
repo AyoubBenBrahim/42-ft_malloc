@@ -1,6 +1,7 @@
 
 #include "../inc/malloc.h"
 #include <stddef.h>
+#include <string.h>
 #include <sys/resource.h>
 
 
@@ -20,32 +21,17 @@ t_bool check_sys_limit(size_t size)
     if (ret == -1)
         return FALSE;
 
-    return (size < limit.rlim_max);
+    return (size < limit.rlim_cur);
 }
 
 // Function to allocate memory using mmap()
-void* request_new_page_mmap(t_bins_type bins_type, size_t size) 
+void* request_new_page_mmap(t_bins_type bins_type, size_t mapped_size)
 {
-    void* mem = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-    if (mem == MAP_FAILED || !check_sys_limit(size))
+    void* mem = mmap(NULL, mapped_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    if (mem == MAP_FAILED || !check_sys_limit(mapped_size))
         return NULL;
 
-    
-    // block_t* block = (block_t*)mem;
-    // block->size = size - BLOCK_SIZE;
-    // block->next = NULL;
-    // block->free = 0;
+        memset(mem, 'A', mapped_size);
 
-    // heap->group = group;
-	// heap->total_size = heap_size;
-	// heap->free_size = heap_size - sizeof(t_heap);
-
-    // t_arena *new_arena;
-    // new_arena->bin_type = bins_type;
-
-
-    
-
-    // return (void*)((char*)block + BLOCK_SIZE);
-    return (t_arena*)mem + METADATA_SIZE(size);
+    return (void *)mem;
 }
