@@ -128,3 +128,4 @@ this two articles:
 
 
 
+https://codebrowser.dev/glibc/glibc/malloc/malloc.c.html

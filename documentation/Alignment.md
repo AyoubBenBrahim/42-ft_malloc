@@ -1,3 +1,8 @@
+Alignment fundamentals
+
+https://developer.ibm.com/articles/pa-dalign/
+
+***
 
 why alignment is important: 
 
@@ -39,3 +44,25 @@ this trick is explained in the [pdf](./Marwan_Burelle.pdf)
 better malloc project:
 
 Implementing a memory allocator https://github.com/kishan811/Better-Malloc
+
+**
+
+https://medium.com/howsofcoding/memory-management-aligned-malloc-and-free-9273336bd4c6
+
+**
+
+By using this modified `align8` macro, you can align memory addresses on a 64-bit system or macOS to the nearest greater or equal multiple of 8, which is the alignment requirement for 64-bit systems.
+
+```c
+#define align8(x) (((((x)-1)>>3)<<3)+8)
+```
+
+1. `x`: This represents the input value that you want to align.
+
+2. `(x-1)`: By subtracting 1 from `x`, we ensure that if `x` is already a multiple of 8, the result remains the same. Otherwise, it becomes the nearest smaller multiple of 8.
+
+3. `((x-1)>>3)`: The shift operation `(x-1)>>3` divides the value by 8. This effectively moves the bits of `(x-1)` three positions to the right, which is equivalent to integer division by 8.
+
+4. `<<3`: The resulting value from the previous step is shifted three positions to the left, effectively multiplying it by 8. This gives us the nearest smaller or equal multiple of 8 to `x`.
+
+5. `+8`: Finally, we add 8 to the result to obtain the nearest greater or equal multiple of 8. This ensures that the alignment requirement is met. If `x` is already a multiple of 8, the macro will still add 8 to maintain alignment.
