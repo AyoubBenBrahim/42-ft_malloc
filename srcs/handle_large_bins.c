@@ -9,13 +9,14 @@ void *handle_large_bins(t_bins_type bins_type, size_t size)
         new_arena->next = NULL;
         new_arena->bin_type = LARGE;
         new_arena->free_size = 0;
-        // new_arena->is_full = TRUE;
         if (!global_arena) {
             global_arena->last = new_arena;
             global_arena = new_arena;
-            return (void*)((void*)new_arena + ARENA_STRUCT_SIZE);
+            
         }
-        global_arena->last->next = new_arena;
-        global_arena->last = new_arena;
-        return (void*)((void*)new_arena + ARENA_STRUCT_SIZE);
+        else {
+            global_arena->last->next = new_arena;
+            global_arena->last = new_arena;
+        }
+        return (void*)((void*)new_arena + ARENA_HEADER_SIZE);
 }

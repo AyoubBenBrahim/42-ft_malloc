@@ -1,8 +1,6 @@
 
 #include "../inc/malloc.h"
-#include <stddef.h>
-#include <string.h>
-#include <sys/resource.h>
+
 
 
 /*
@@ -31,7 +29,7 @@ void* request_new_page_mmap(t_bins_type bins_type, size_t mapped_size)
     if (mem == MAP_FAILED || !check_sys_limit(mapped_size))
         return NULL;
 
-        memset(mem, 'A', mapped_size);
+        // memset(mem, 'A', mapped_size);
 
     return (void *)mem;
 }
