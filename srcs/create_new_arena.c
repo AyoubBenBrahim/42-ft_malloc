@@ -19,7 +19,7 @@ t_bin *create_new_arena(t_bins_type bins_type, size_t size) {
   new_bin->is_free = FALSE;
   new_arena->allocated_bins_count = 1;
 
-  set_last_bin(&new_arena, bins_type, new_bin);
+  set_last_bin_in_arena(&new_arena, bins_type, new_bin);
   // Add the new arena to the list of arenas
 
   if (!global_arena) {
@@ -27,9 +27,6 @@ t_bin *create_new_arena(t_bins_type bins_type, size_t size) {
 
     global_arena = new_arena;
     global_arena->last = new_arena;
-
-    global_arena->last_tiny_bin = NULL;
-    global_arena->last_small_bin = NULL;
 
   } else {
     ASSERT(global_arena != NULL);

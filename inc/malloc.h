@@ -22,8 +22,8 @@
 # define TINY_BINS_ARENA_PAGE (4 * PAGE_SIZE) // 16KB
 # define TINY_BIN_SIZE (TINY_BINS_ARENA_PAGE / BIN_CAPACITY) // 128
 
-# define SMALL_BINS_ARENA_PAGE (32 * PAGE_SIZE) // 128KB 131 072
-# define SMALL_BIN_SIZE (SMALL_BINS_ARENA_PAGE / BIN_CAPACITY) // 1024
+# define SMALL_BINS_ARENA_PAGE (16 * PAGE_SIZE) // 65K 65536
+# define SMALL_BIN_SIZE (SMALL_BINS_ARENA_PAGE / BIN_CAPACITY) // 512
 
 #define IS_TINY(x) (x <= TINY_BIN_SIZE)
 #define IS_SMALL(x) (x > TINY_BIN_SIZE && x <= SMALL_BIN_SIZE)
@@ -34,7 +34,7 @@
 
 #define METADATA_SIZE(REQUESTED_SIZE) (ARENA_HEADER_SIZE + BIN_HEADER_SIZE + REQUESTED_SIZE)
 
-#define ROUND_TO_MULTIPLE_OF_16(x) (((x) + 15) & ~15)
+#define ROUND_TO_MULTIPLE_OF_16(x) (((x) + 15) & ~0xF)
 
 #define ALIGN4(x) (((( (x) - 1) >> 2) << 2 ) + 4 )
 
@@ -50,11 +50,10 @@ typedef enum        e_bool
 
 
 typedef struct s_bin {
-    size_t		size;
+    size_t          size;
     struct s_bin	*prev;
 	struct s_bin	*next;
-    t_bool        is_free;
-    void           *valid_ptr;
+    t_bool          is_free;
 }				t_bin;
 
 typedef enum e_bins_type {
@@ -88,10 +87,10 @@ void *handle_large_bins(t_bins_type bins_type, size_t size);
 void *my_malloc(size_t size);
 t_bins_type get_bins_type(size_t size);
 
-void print_arena();
+void print_arena(int size);
 
-t_bin *get_last_bin(t_arena *arena, t_bins_type binType);
-void set_last_bin(t_arena **arena, t_bins_type binType, t_bin *bin);
+t_bin *get_last_bin_in_arena(t_arena *arena, t_bins_type binType);
+void set_last_bin_in_arena(t_arena **arena, t_bins_type binType, t_bin *bin);
 
 t_bin *append_new_bin(t_arena *arena, t_bins_type binType, size_t size);
 

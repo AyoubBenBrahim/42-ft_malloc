@@ -1,7 +1,14 @@
 #include "../inc/malloc.h"
+#include <stdio.h>
 
-void print_arena()
+void print_arena(int requested_size)
 {
+  printf("requested_size = %d\n", requested_size);
+  printf("sizeof(t_arena) = %zu\n", sizeof(t_arena));
+  printf("sizeof(t_bin) = %zu\n", sizeof(t_bin));
+  printf("sizeof(t_arena) + sizeof(t_bin) = %zu\n", sizeof(t_arena) + sizeof(t_bin));
+  printf("sizeof(t_bin) + requested_size = %zu\n\n", sizeof(t_bin) + requested_size);
+
   t_arena *current = global_arena;
   while (current)
   {
@@ -44,9 +51,9 @@ void *my_malloc(size_t size) {
 
   t_bins_type bins_type = get_bins_type(size);
 
-  if (bins_type == LARGE) {
+  if (bins_type == LARGE)
     return  handle_large_bins(bins_type, size);
-  }
+
 
   // Find the best-fit block for large allocations
 
@@ -54,11 +61,11 @@ void *my_malloc(size_t size) {
   t_bin *best_fit = find_best_fit(bins_type, size);
 
   // If a suitable bin is found, allocate from it
-  if (best_fit) {
+  if (best_fit)
     return (void *)((void *)best_fit + BIN_HEADER_SIZE);
-  }
+  
 
-  // If no suitable bin is found, allocate a new block using mmap()
+  // If no suitable bin is found, allocate a new arena via mmap()
   t_bin *new_bin = create_new_arena(bins_type, size);
 
   if (!new_bin)
