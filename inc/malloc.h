@@ -95,4 +95,8 @@ void set_last_bin(t_arena **arena, t_bins_type binType, t_bin *bin);
 
 t_bin *append_new_bin(t_arena *arena, t_bins_type binType, size_t size);
 
+t_bin *create_new_arena(t_bins_type bins_type, size_t size);
+
+
+
 #endif

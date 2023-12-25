@@ -66,3 +66,8 @@ By using this modified `align8` macro, you can align memory addresses on a 64-bi
 4. `<<3`: The resulting value from the previous step is shifted three positions to the left, effectively multiplying it by 8. This gives us the nearest smaller or equal multiple of 8 to `x`.
 
 5. `+8`: Finally, we add 8 to the result to obtain the nearest greater or equal multiple of 8. This ensures that the alignment requirement is met. If `x` is already a multiple of 8, the macro will still add 8 to maintain alignment.
+
+
+==
+
+`size = (size + 15) & ~0xf;` // align to 16 bytes, check the [video](https://youtu.be/CulF4YQt6zA) on Low-Level Learning ytube channel

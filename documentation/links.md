@@ -129,3 +129,19 @@ this two articles:
 
 
 https://codebrowser.dev/glibc/glibc/malloc/malloc.c.html
+
+
+```
+void *malloc(size_t size) {
+  struct block_meta *block;
+  // TODO: 
+
+  return(block+1);
+}
+
+we return block+1 because we want to return a pointer to the region after block_meta.
+Since block is a pointer of type struct block_meta, +1 increments the address by one sizeof(struct block_meta).
+``` 
+[source](https://danluu.com/malloc-tutorial/)
+
+
