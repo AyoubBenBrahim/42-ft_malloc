@@ -1,36 +1,4 @@
 #include "../inc/malloc.h"
-#include <stdio.h>
-
-void print_arena(int requested_size)
-{
-  printf("requested_size = %d\n", requested_size);
-  printf("sizeof(t_arena) = %zu\n", sizeof(t_arena));
-  printf("sizeof(t_bin) = %zu\n", sizeof(t_bin));
-  printf("sizeof(t_arena) + sizeof(t_bin) = %zu\n", sizeof(t_arena) + sizeof(t_bin));
-  printf("sizeof(t_bin) + requested_size = %zu\n\n", sizeof(t_bin) + requested_size);
-
-  t_arena *current = global_arena;
-  while (current)
-  {
-    printf("arena = %p\n", current);
-    printf("arena->last = %p\n", current->last);
-    int bins_type = current->bin_type;
-
-    if (bins_type == TINY)
-      printf("arena->bin_type = TINY\n");
-    else if (bins_type == SMALL)
-      printf("arena->bin_type = SMALL\n");
-    else
-      printf("arena->bin_type = LARGE\n");
-
-    printf("arena->nbr_bins = %zu\n", current->allocated_bins_count);
-
-    printf("arena->free_size = %zu\n", current->free_size);
-    printf("\n");
-    current = current->next;
-  }
-  printf("===============================================\n");
-}
 
 t_bins_type get_bins_type(size_t size) {
   if (IS_TINY(size))
@@ -52,24 +20,20 @@ void *my_malloc(size_t size) {
   t_bins_type bins_type = get_bins_type(size);
 
   if (bins_type == LARGE)
-    return  handle_large_bins(bins_type, size);
+  {
+    t_bin *new_bin =  handle_large_bins(bins_type, size);
+    return (new_bin) ? (void *)(new_bin + 1) : NULL;
+  }
 
-
-  // Find the best-fit block for large allocations
-
-
+  // Find the best-fit block TINY or SMALL
   t_bin *best_fit = find_best_fit(bins_type, size);
 
   // If a suitable bin is found, allocate from it
   if (best_fit)
     return (void *)((void *)best_fit + BIN_HEADER_SIZE);
-  
 
   // If no suitable bin is found, allocate a new arena via mmap()
   t_bin *new_bin = create_new_arena(bins_type, size);
 
-  if (!new_bin)
-    return NULL;
-
-  return (void *)(new_bin + 1);
+  return (new_bin) ? (void *)(new_bin + 1) : NULL;
 }

@@ -92,6 +92,8 @@ t_bin *append_new_bin(t_arena *best_fit_arena , t_bins_type binType, size_t size
     new_bin->next = NULL;
     new_bin->prev = last_prev_bin;
     new_bin->is_free = FALSE;
+    // global_arena("global_arena = %p\n", global_arena);
+    new_bin->magic_number = generateMagicNumber();
     set_last_bin_in_arena(&best_fit_arena, binType, new_bin);
 
     return new_bin;
@@ -119,9 +121,9 @@ t_bin *find_best_fit(t_bins_type binType, size_t size) {
             best_fit_bin->size = size;
         }
         
+        // best_fit_arena->free_size -= size + BIN_HEADER_SIZE;
         // we only need to update the free_size when we create a new arena 
         // or when we free a bin or when we append a new bin
-        // best_fit_arena->free_size -= size + BIN_HEADER_SIZE;
         
 
         return best_fit_bin;
@@ -129,6 +131,7 @@ t_bin *find_best_fit(t_bins_type binType, size_t size) {
     {
         ASSERT(best_fit_bin == NULL);
         ASSERT(best_fit_arena != NULL);
+        ft_printf("** append_new_bin ** \n");
         t_bin *new_bin = append_new_bin(best_fit_arena, binType, size);
 
         best_fit_arena->free_size -= size + BIN_HEADER_SIZE;

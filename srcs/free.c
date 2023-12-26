@@ -1,5 +1,91 @@
 
 #include "../inc/malloc.h"
+#include <stdlib.h>
+#include <sys/mman.h>
+
+t_bool is_valid_ptr(void *ptr)
+{
+    if (!ptr || !global_arena)
+        return FALSE;
+  
+
+    t_bins_type type = global_arena->last->bin_type;
+    void *heap_start =  global_arena;
+    void *heap_end = global_arena->last + GET_BIN_SIZE(type);
+
+    ft_printf("heap_start = %p\n", heap_start);
+    ft_printf("heap_end = %p\n", heap_end);
+
+    void *ptr1 = heap_start - 100;
+    void *ptr2 = heap_end + 100;
+
+    void *ptr3 = heap_start + 100;
+    void *ptr4 = heap_end + 1;
+
+    // #check if the pointer is in the heap
+    if (ptr1 >= heap_start && ptr1 <= heap_end)
+    {
+        ft_printf("ptr1 %p is in the heap\n", ptr1);
+        // return TRUE;
+    }
+    else
+    {
+        ft_printf("ptr1 %p is not in the heap\n", ptr1);
+        // return FALSE;
+    }
+    if (ptr2 >= heap_start && ptr2 <= heap_end)
+    {
+        ft_printf("ptr2 %p is in the heap\n", ptr2);
+        // return TRUE;
+    }
+    else
+    {
+        ft_printf("ptr2 %p is not in the heap\n", ptr2);
+        // return FALSE;
+    }
+/*************************/
+    if (ptr3 >= heap_start && ptr3 <= heap_end)
+    {
+        ft_printf("ptr3 %p is in the heap\n", ptr3);
+        // return TRUE;
+    }
+    else
+    {
+        ft_printf("ptr3 %p is not in the heap\n", ptr3);
+        // return FALSE;
+    }
+    if (ptr4 >= heap_start && ptr4 <= heap_end)
+    {
+        ft_printf("ptr4 %p is in the heap\n", ptr4);
+        // return TRUE;
+    }
+    else
+    {
+        ft_printf("ptr4 %p is not in the heap\n", ptr4);
+        // return FALSE;
+    }
+
+    return FALSE;
+}
+
+t_bool is_valid_bin(t_bin *bin)
+{
+    
+    // Check the magic number
+    unsigned int expectedMagicNumber = generateMagicNumber();
+    ft_printf("bin->size = %zu\n", bin->size);
+    ft_printf("bin->is_free = %d\n", bin->is_free);
+    ft_printf("bin->magic_number = %u\n", bin->magic_number);
+    ft_printf("expectedMagicNumber = %u\n", expectedMagicNumber);
+    ASSERT(bin->magic_number == expectedMagicNumber);
+    if (bin->magic_number != expectedMagicNumber) {
+        // Handle invalid bin case
+        return FALSE;
+    }
+    return TRUE;
+}
+
+
 /*
 
 // Function to coalesce adjacent free blocks
@@ -79,12 +165,29 @@ void if_last_bin_free_arena(t_bin* bin)
 //   }
 }
 
-void my_free(void* ptr) {
-//   if (!ptr) {
-//     return; // Ignore NULL pointers
-//   }
+t_bool free_large_bin(void* ptr) {
 
-//   t_bin* bin = (t_bin*)((char*)ptr - sizeof(t_bin));
+    // munmap 
+
+    return TRUE;
+}
+
+
+void my_free(void* ptr) {
+  
+// if (!is_valid_ptr(ptr))
+//     return;
+
+// t_bin* bin = (t_bin*)((char*)ptr - sizeof(t_bin));
+
+t_bin* bin = (t_bin*)((void *)global_arena + sizeof(t_arena));
+
+if (!is_valid_bin(bin))
+    return;
+
+  exit(0);
+
+free_large_bin(ptr);
 //   bin->is_free = TRUE;
 
 //   // Coalesce adjacent free bins
@@ -94,3 +197,13 @@ void my_free(void* ptr) {
 //     // If the bin is the last bin in the arena, check if the arena is empty
 //     if_last_bin_free_arena(bin);
 }
+
+// t_block fusion(t_block b){
+//  if (b->next && b->next->free){
+//  b->size += BLOCK_SIZE + b->next->size;
+//  b->next = b->next->next;
+//  if (b->next)
+//  b->next->prev = b;
+//  }
+//  return (b);
+//  }

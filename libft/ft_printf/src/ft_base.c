@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static char	*to_binary(t_ull nbr)
+char	*to_binary(t_ull nbr)
 {
 	char	*convert;
 	int		shift;
@@ -24,7 +24,7 @@ static char	*to_binary(t_ull nbr)
 	return (convert);
 }
 
-static char	*to_hexa(t_ull nbr, char spec)
+char	*to_hexa(t_ull nbr, char spec)
 {
 	int		shift;
 	int		mask;
@@ -38,7 +38,7 @@ static char	*to_hexa(t_ull nbr, char spec)
 	return (convert);
 }
 
-static char	*to_octa(t_ull nbr)
+char	*to_octa(t_ull nbr)
 {
 	int		shift;
 	int		mask;
