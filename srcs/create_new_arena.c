@@ -1,8 +1,5 @@
 
 #include "../inc/malloc.h"
-#include <stdio.h>
-
-
 
 t_bin *create_new_arena(t_bins_type bins_type, size_t size) {
 
@@ -11,10 +8,11 @@ t_bin *create_new_arena(t_bins_type bins_type, size_t size) {
     return NULL;
 
   new_arena->next = NULL;
+  new_arena->prev = NULL;
   new_arena->bin_type = bins_type;
   new_arena->free_size = GET_BIN_SIZE(bins_type) - METADATA_SIZE(size); // recheck
   new_arena->allocated_bins_count = 1;
-  // new_arena->is_full = FALSE;
+  new_arena->allocated_size = GET_BIN_SIZE(bins_type);
 
   t_bin *new_bin = (t_bin *)(new_arena + 1); // (void *)new_arena+sizeof(t_arena)
 
@@ -41,12 +39,12 @@ t_bin *create_new_arena(t_bins_type bins_type, size_t size) {
   } else {
     ASSERT(global_arena != NULL);
 
+    new_arena->prev = global_arena->last;
     global_arena->last->next = new_arena;
     global_arena->last = new_arena;
   }
 
   new_bin->magic_number = generateMagicNumber();
-  ft_printf("TINY/SMALL new_bin->magic_number = %u\n", new_bin->magic_number);
 
   return new_bin;
 }

@@ -8,6 +8,7 @@ void *handle_large_bins(t_bins_type bins_type, size_t size)
             return NULL;
         new_arena->next = NULL;
         new_arena->bin_type = LARGE;
+        new_arena->allocated_size = size;
         new_arena->free_size = 0;
         new_arena->allocated_bins_count = 1;
 
@@ -23,6 +24,7 @@ void *handle_large_bins(t_bins_type bins_type, size_t size)
             global_arena = new_arena;
         }
         else {
+            new_arena->prev = global_arena->last;
             global_arena->last->next = new_arena;
             global_arena->last = new_arena;
         }

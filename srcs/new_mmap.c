@@ -31,5 +31,6 @@ void* request_new_page_mmap(t_bins_type bins_type, size_t mapped_size)
 
         // memset(mem, 'A', mapped_size);
 
+    ft_printf("mmap = %p\n", mem);
     return (void *)mem;
 }

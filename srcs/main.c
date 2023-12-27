@@ -53,7 +53,7 @@ my_malloc(25);
         // print_arenas(128);
     }
 
-    print_bins();
+    
 
     // my_malloc(100);
     // print_arena(100);
@@ -69,14 +69,31 @@ my_malloc(25);
     // print_arenas(600);
   
     
+    char* ptr = (char*)my_malloc(200);
+    char* ptr2 = (char*)my_malloc(200);
+    char* ptr3 = (char*)my_malloc(200);
+    char* ptr4 = (char*)my_malloc(700);
+    char* ptr5 = (char*)my_malloc(600);
     
-
+    print_bins();
     
- ft_printf("\n\n");
+    ft_printf("\n\n");
 
- 
-  my_free(global_arena);
+    ft_printf("ret_ptr1 = %p\n", ptr);
+    ft_printf("ret_ptr2 = %p\n", ptr2);
+    ft_printf("ret_ptr3 = %p\n", ptr3);
+    ft_printf("--------------------\n");
 
+    my_free(ptr);
+    ft_printf("--------------------\n");
+    my_free(ptr2);
+    ft_printf("--------------------\n");
+    my_free(ptr3);
+    ft_printf("--------------------\n");
+    my_free(ptr4);
+
+    ft_printf("\n\n                 #### after free #####\n\n");
+    print_bins();
 
     return 0;
 }

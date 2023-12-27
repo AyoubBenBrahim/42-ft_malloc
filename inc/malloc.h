@@ -4,13 +4,13 @@
 #include "../libft/libft.h"
 #include <sys/types.h>
 # include <unistd.h>
-# include <stdio.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
 # include <stdint.h>
 # include <stddef.h>
 # include <string.h>
 # include <stdlib.h>
+#include <sys/_types/_uintptr_t.h>
 
 # include <assert.h>
 # define ASSERT assert
@@ -66,10 +66,12 @@ typedef enum e_bins_type {
 
 typedef struct	s_arena {
 	struct s_arena	*next;
-    struct s_arena *last;
+    struct s_arena	*prev;
+    struct s_arena  *last;
     struct s_bin	*last_tiny_bin;
     struct s_bin	*last_small_bin;
     t_bins_type     bin_type;
+    size_t			allocated_size;
 	size_t			free_size;
 	size_t			allocated_bins_count;
     // t_bool          is_full;

@@ -1,12 +1,17 @@
 #include "../inc/malloc.h"
 
-void print_arenas(int requested_size)
+void print_headers_info(int requested_size)
 {
-    ft_printf("requested_size = %d = 0x%x\n", requested_size, requested_size);
+     ft_printf("requested_size = %d = 0x%x\n", requested_size, requested_size);
     ft_printf("sizeof(t_arena) = %zu = 0x%lx\n", sizeof(t_arena), sizeof(t_arena));
     ft_printf("sizeof(t_bin) = %zu = 0x%lx \n", sizeof(t_bin), sizeof(t_bin));
     ft_printf("sizeof(t_arena) + sizeof(t_bin) = %zu\n", sizeof(t_arena) + sizeof(t_bin));
     ft_printf("sizeof(t_bin) + requested_size = %zu\n\n", sizeof(t_bin) + requested_size);
+}
+
+void print_arenas(int requested_size)
+{
+   print_headers_info(requested_size);
 
   t_arena *current = global_arena;
   while (current)
@@ -38,16 +43,17 @@ void print_bins()
     while (current)
     {
         ft_printf("*******arena [%d] = %p *******\n", i++, current);
+        ft_printf("%p --> %p --> %p\n", current->prev, current, current->next);
         t_bin *bin = (t_bin *)(current + 1);
         while (bin)
         {
-            ft_printf("bin = %p\n", bin);
-            ft_printf("bin->size = %zu = 0x%lx\n", bin->size, bin->size);
+            ft_printf(" bin = %p\n", bin);
+            ft_printf(" bin->size = %zu = 0x%lx\n", bin->size, bin->size);
             char *is_free = bin->is_free ? "TRUE" : "FALSE";
-            ft_printf("bin->is_free = %s\n", is_free);
-            ft_printf("bin->magic_number = %u\n", bin->magic_number);
-            ft_printf("bin->next = %p\n", bin->next);
-            ft_printf("bin->prev = %p\n", bin->prev);
+            ft_printf(" bin->is_free = %s\n", is_free);
+            ft_printf(" bin->magic_number = %u\n", bin->magic_number);
+            ft_printf(" bin->next = %p\n", bin->next);
+            ft_printf(" bin->prev = %p\n", bin->prev);
             ft_printf("\n");
             bin = bin->next;
         }

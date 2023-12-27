@@ -74,7 +74,8 @@ t_bool is_valid_bin(t_bin *bin)
     // Check the magic number
     unsigned int expectedMagicNumber = generateMagicNumber();
     ft_printf("bin->size = %zu\n", bin->size);
-    ft_printf("bin->is_free = %d\n", bin->is_free);
+    char *isfree_str = (bin->is_free == TRUE) ? "TRUE" : "FALSE";
+    ft_printf("bin->is_free = %s\n", isfree_str);
     ft_printf("bin->magic_number = %u\n", bin->magic_number);
     ft_printf("expectedMagicNumber = %u\n", expectedMagicNumber);
     ASSERT(bin->magic_number == expectedMagicNumber);
@@ -165,29 +166,54 @@ void if_last_bin_free_arena(t_bin* bin)
 //   }
 }
 
-t_bool free_large_bin(void* ptr) {
+t_bool free_large_bin(void* bin) {
 
-    // munmap 
+    void *mmapped_ptr = (void*)((char*)bin - sizeof(t_arena));
+    ft_printf("remove mmapped_ptr = %p\n", mmapped_ptr);
+    // ((t_bin *)bin)->is_free = TRUE;
+    // return TRUE;
+
+    // handle pointers next/prev arena
+    if (((t_arena*)mmapped_ptr)->prev) {
+        ((t_arena*)mmapped_ptr)->prev->next = ((t_arena*)mmapped_ptr)->next;
+    }
+    if (((t_arena*)mmapped_ptr)->next) {
+        ((t_arena*)mmapped_ptr)->next->prev = ((t_arena*)mmapped_ptr)->prev;
+    }
+
+    int ret = munmap(mmapped_ptr, ((t_arena*)mmapped_ptr)->allocated_size);
+
+    if (ret == -1) {
+        ft_printf("munmap failed\n");
+        return FALSE;
+    }
 
     return TRUE;
 }
-
 
 void my_free(void* ptr) {
   
 // if (!is_valid_ptr(ptr))
 //     return;
 
-// t_bin* bin = (t_bin*)((char*)ptr - sizeof(t_bin));
+t_bin* bin = (t_bin*)((char*)ptr - sizeof(t_bin));
 
-t_bin* bin = (t_bin*)((void *)global_arena + sizeof(t_arena));
+ft_printf("ret_ptr = %p\n", ptr);
+ft_printf("bin_ptr = %p\n", bin);
 
 if (!is_valid_bin(bin))
     return;
 
-  exit(0);
+t_bins_type bin_type = get_bins_type(bin->size);
+char *bin_type_str = (bin_type == TINY) ? "TINY" : (bin_type == SMALL) ? "SMALL" : "LARGE";
+ft_printf("bin_type = %s\n", bin_type_str);
 
-free_large_bin(ptr);
+if (bin_type == LARGE) {
+    free_large_bin(bin);
+    return;
+}
+
+
 //   bin->is_free = TRUE;
 
 //   // Coalesce adjacent free bins

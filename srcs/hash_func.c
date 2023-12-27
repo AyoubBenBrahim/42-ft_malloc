@@ -1,7 +1,4 @@
 #include "../inc/malloc.h"
-#include <stdio.h>
-#include <sys/_types/_uintptr_t.h>
-
 
 unsigned int generateMagicNumber() {
     uintptr_t ptr = (uintptr_t)global_arena;
@@ -22,13 +19,3 @@ unsigned int generateMagicNumber() {
 
     return hash;
 }
-
-// int main() {
-//     unsigned int magicNumber = generateMagicNumber();
-//     ft_printf("magicNumber = %u\n", magicNumber);
-//     // uintptr_t ptr = 0x10b9b5000;
-//     // // char *test = to_binary(ptr);
-//     // ft_printf("%s\n", test);
-
-//     return 0;
-// }
