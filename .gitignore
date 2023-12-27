@@ -4,10 +4,9 @@ objs/
 *.txt
 *.DS_Store
 a.out
-*.out.dSYM/
-malloc.dSYM/
+*.dSYM/
 *.old
 .vscode/
-malloc
+ft_malloc
 test/
 test

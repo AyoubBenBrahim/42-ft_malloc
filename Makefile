@@ -1,20 +1,24 @@
-NAME	=	ft_nm
+NAME	=	ft_malloc
 
 CC		=	gcc
 
-CFLAGS	=	-Werror -Wextra -Wall
+CFLAGS	=	-g #-Werror -Wextra -Wall
 
-FUNCTIONS	=	ft_nm.c\
-				manageELF32.c\
-				manageELF64.c\
-				printer.c\
-				symboles_handler.c\
-				debug.c\
-				get_section_name.c\
+FUNCTIONS	=	best_fit.c\
+				create_new_arena.c\
+				find.c\
+				free.c\
+				handle_large_bins.c\
+				hash_func.c\
+				main.c\
+				malloc.c\
+				memory_dump.c\
+				new_mmap.c\
+				realloc.c\
 				
 				
 
-HEADERS	=		inc/ft_nm.h
+HEADERS	=		inc/malloc.h
 
 OBJDIR	=		objs
 
@@ -28,7 +32,7 @@ LIBFTPRINTF = libft/ft_printf/libftprintf.a
 all :			$(NAME)
 
 $(OBJDIR):
-				@echo "FT_NM Building............"
+				@echo "malloc Building............"
 				@mkdir -p $(OBJDIR)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.c $(HEADERS)
@@ -42,13 +46,13 @@ $(LIBFTPRINTF):
 
 $(NAME): $(OBJDIR) $(OBJS) $(LIBFT) $(LIBFTPRINTF) $(HEADERS) 
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LIBFTPRINTF) -o $(NAME)
-	@echo "\033[44m\033[93m\033[21mFT_NM Built Successfully ............[OK]\033[49m\033[93m\n"
+	@echo "\033[44m\033[93m\033[21mmalloc Built Successfully ............[OK]\033[49m\033[93m\n"
 
 clean :
 				@make clean -C libft
 				@make clean -C libft/ft_printf
 				@rm -rf $(OBJDIR)
-				@echo "\033[41m\033[39m\033[1mRemoving FT_NM Objects...[OK]\033[49m\033[93m"
+				@echo "\033[41m\033[39m\033[1mRemoving malloc Objects...[OK]\033[49m\033[93m"
 
 fclean :		clean
 				@make fclean -C libft
