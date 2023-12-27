@@ -49,14 +49,15 @@ typedef enum        e_bool
     TRUE
 }                   t_bool;
 
-
 typedef struct s_bin {
     size_t          size;
     struct s_bin	*prev;
 	struct s_bin	*next;
     t_bool          is_free;
-    unsigned int magic_number;
+    unsigned int    magic_number;
+    struct s_arena  *parent_arena;
 }				t_bin;
+
 
 typedef enum e_bins_type {
     TINY,
@@ -77,35 +78,43 @@ typedef struct	s_arena {
     // t_bool          is_full;
 }				t_arena;
 
-t_arena *global_arena;
+t_arena         *global_arena;
 
-void* my_malloc(size_t size);
-void my_free(void* ptr);
+void            *my_malloc(size_t size);
+void            my_free(void* ptr);
 
-t_bool check_sys_limit(size_t size);
-void* request_new_page_mmap(t_bins_type bins_type, size_t mapped_size);
-t_bin* find_best_fit(t_bins_type binType, size_t size);
-t_bin* find_best_fit_bin(t_arena* arena, size_t size);
-t_arena* find_best_fit_arena(t_bins_type binType, size_t size);
-void split_bin(t_bin* bin, size_t size);
-void *handle_large_bins(t_bins_type bins_type, size_t size);
+t_bool          check_sys_limit(size_t size);
+void*           request_new_page_mmap(t_bins_type bins_type, size_t mapped_size);
+t_bin*          find_best_fit(t_bins_type binType, size_t size);
+t_bin*          find_best_fit_bin(t_arena* arena, size_t size);
+t_arena*        find_best_fit_arena(t_bins_type binType, size_t size);
+void            split_bin(t_bin* bin, size_t size);
+void            *handle_large_bins(t_bins_type bins_type, size_t size);
 
-t_bins_type get_bins_type(size_t size);
+t_bins_type     get_bins_type(size_t size);
 
-void *my_malloc(size_t size);
-t_bins_type get_bins_type(size_t size);
+void            *my_malloc(size_t size);
+t_bins_type     get_bins_type(size_t size);
 
-void print_arenas(int size);
-void print_bins();
+void            print_arenas(int size);
+void            print_bins();
 
-t_bin *get_last_bin_in_arena(t_arena *arena, t_bins_type binType);
-void set_last_bin_in_arena(t_arena **arena, t_bins_type binType, t_bin *bin);
+t_bin           *get_last_bin_in_arena(t_arena *arena, t_bins_type binType);
+void            set_last_bin_in_arena(t_arena **arena, t_bins_type binType, t_bin *bin);
 
-t_bin *append_new_bin(t_arena *arena, t_bins_type binType, size_t size);
+t_bin           *append_new_bin(t_arena *arena, t_bins_type binType, size_t size);
 
-t_bin *create_new_arena(t_bins_type bins_type, size_t size);
+t_bin           *create_new_arena(t_bins_type bins_type, size_t size);
 
-t_bool is_valid_ptr(void *ptr);
+t_bool          is_valid_ptr(void *ptr);
 
-unsigned int generateMagicNumber();
+unsigned int    generateMagicNumber();
+
+
+
+
+t_bool          free_large_bin(void* bin);
+t_bool          free_tiny_small_bin(void* bin);
+
+
 #endif

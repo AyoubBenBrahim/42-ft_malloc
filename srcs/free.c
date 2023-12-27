@@ -87,16 +87,44 @@ t_bool is_valid_bin(t_bin *bin)
 }
 
 
-/*
 
-// Function to coalesce adjacent free blocks
-void coalesce_blocks(block_t* block) {
-    if (block->next && block->next->free) {
-        block->size += BLOCK_SIZE + block->next->size;
-        block->next = block->next->next;
+// Function to coalesce adjacent free bins
+void coalesce_adjacent_free_bins(t_bin* curr_free_bin) {
+    t_bin* next_bin = curr_free_bin->next;
+    t_bin* prev_bin = curr_free_bin->prev;
+
+    if (next_bin && next_bin->is_free) {
+        // Coalesce with next bin
+        curr_free_bin->size += next_bin->size + sizeof(t_bin);
+        curr_free_bin->next = next_bin->next;
+        if (next_bin->next)
+            next_bin->next->prev = curr_free_bin;
+
+    }
+
+    if (prev_bin && prev_bin->is_free) {
+        // Coalesce with previous bin
+        prev_bin->size += curr_free_bin->size + sizeof(t_bin);
+        prev_bin->next = curr_free_bin->next;
+        if (curr_free_bin->next)
+            curr_free_bin->next->prev = prev_bin;
+
     }
 }
 
+// t_block fusion(t_block b)
+//{
+//  if (b->next && b->next->free)
+//  {
+//      b->size += BLOCK_SIZE + b->next->size;
+//      b->next = b->next->next;
+//      if (b->next)
+//          b->next->prev = b;
+//  }
+// return (b);
+//}
+
+/*
 // Function to consolidate free blocks
 void malloc_consolidate() {
     block_t* current = free_list;
@@ -108,24 +136,6 @@ void malloc_consolidate() {
             current = current->next;
         }
     }
-}
-
-// Function to free memory
-void free(void* ptr) {
-    if (!ptr)
-        return;
-
-    // Get the block metadata
-    block_t* block = (block_t*)((char*)ptr - BLOCK_SIZE);
-
-    // Mark the block as free
-    block->free = 1;
-
-    // Coalesce adjacent free blocks
-    coalesce_blocks(block);
-
-    // Consolidate free blocks
-    malloc_consolidate();
 }
 */
 
@@ -171,7 +181,6 @@ t_bool free_large_bin(void* bin) {
     void *mmapped_ptr = (void*)((char*)bin - sizeof(t_arena));
     ft_printf("remove mmapped_ptr = %p\n", mmapped_ptr);
     // ((t_bin *)bin)->is_free = TRUE;
-    // return TRUE;
 
     // handle pointers next/prev arena
     if (((t_arena*)mmapped_ptr)->prev) {
@@ -187,6 +196,45 @@ t_bool free_large_bin(void* bin) {
         ft_printf("munmap failed\n");
         return FALSE;
     }
+
+    return TRUE;
+}
+
+t_bool free_tiny_small_bin(void* bin) {
+    ((t_bin *)bin)->is_free = TRUE;
+
+    // handle pointers next/prev bin
+    // if (((t_bin*)bin)->prev) {
+    //     ((t_bin*)bin)->prev->next = ((t_bin*)bin)->next;
+    // }
+    // if (((t_bin*)bin)->next) {
+    //     ((t_bin*)bin)->next->prev = ((t_bin*)bin)->prev;
+    // }
+
+    // handle pointers next/prev arena
+    // if (((t_arena*)((char*)bin - sizeof(t_arena)))->prev) {
+    //     ((t_arena*)((char*)bin - sizeof(t_arena)))->prev->next = ((t_arena*)((char*)bin - sizeof(t_arena)))->next;
+    // }
+    // if (((t_arena*)((char*)bin - sizeof(t_arena)))->next) {
+    //     ((t_arena*)((char*)bin - sizeof(t_arena)))->next->prev = ((t_arena*)((char*)bin - sizeof(t_arena)))->prev;
+    // }
+
+    // handle free_size
+    t_arena* arena = (t_arena*)(((t_bin*)bin)->parent_arena);
+    ft_printf("/////parent_arena = %p\n", arena);
+    arena->free_size += ((t_bin*)bin)->size;
+
+
+    // handle allocated_bins_count
+    // ((t_arena*)((char*)bin - sizeof(t_arena)))->allocated_bins_count--;
+
+    // handle allocated_size
+    // ((t_arena*)((char*)bin - sizeof(t_arena)))->allocated_size -= ((t_bin*)bin)->size + sizeof(t_bin);
+
+    // handle last
+    // if (((t_arena*)((char*)bin - sizeof(t_arena)))->last == bin) {
+    //     ((t_arena*)((char*)bin - sizeof(t_arena)))->last = ((t_bin*)bin)->prev;
+    // }
 
     return TRUE;
 }
@@ -213,23 +261,13 @@ if (bin_type == LARGE) {
     return;
 }
 
+free_tiny_small_bin(bin);
 
-//   bin->is_free = TRUE;
 
-//   // Coalesce adjacent free bins
-//   t_arena* arena = (t_arena*)((char*)bin - sizeof(t_arena));
-//   coalesce_bins(arena, (t_bin*)((char*)arena + sizeof(t_arena)));
+//   // coalesce_adjacent_free_bins
+//   coalesce_adjacent_free_bins(arena, (t_bin*)((char*)arena + sizeof(t_arena)));
 
 //     // If the bin is the last bin in the arena, check if the arena is empty
 //     if_last_bin_free_arena(bin);
 }
 
-// t_block fusion(t_block b){
-//  if (b->next && b->next->free){
-//  b->size += BLOCK_SIZE + b->next->size;
-//  b->next = b->next->next;
-//  if (b->next)
-//  b->next->prev = b;
-//  }
-//  return (b);
-//  }

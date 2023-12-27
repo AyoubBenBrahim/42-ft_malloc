@@ -48,6 +48,7 @@ void print_bins()
         while (bin)
         {
             ft_printf(" bin = %p\n", bin);
+            ft_printf(" bin->parent_arena = %p\n", bin->parent_arena);
             ft_printf(" bin->size = %zu = 0x%lx\n", bin->size, bin->size);
             char *is_free = bin->is_free ? "TRUE" : "FALSE";
             ft_printf(" bin->is_free = %s\n", is_free);

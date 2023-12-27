@@ -1,7 +1,68 @@
 #include "../inc/malloc.h"
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 
+void test_large_bin()
+{
+    char* ptr = (char*)my_malloc(200);
+    char* ptr2 = (char*)my_malloc(200);
+    char* ptr3 = (char*)my_malloc(200);
+    char* ptr4 = (char*)my_malloc(700);
+    char* ptr5 = (char*)my_malloc(600);
+    
+    print_bins();
+    
+    ft_printf("\n\n");
+
+    ft_printf("ret_ptr1 = %p\n", ptr);
+    ft_printf("ret_ptr2 = %p\n", ptr2);
+    ft_printf("ret_ptr3 = %p\n", ptr3);
+    ft_printf("--------------------\n");
+
+    my_free(ptr);
+    ft_printf("--------------------\n");
+    my_free(ptr2);
+    ft_printf("--------------------\n");
+    my_free(ptr3);
+    ft_printf("--------------------\n");
+    my_free(ptr4);
+
+    ft_printf("\n\n                 #### after free #####\n\n");
+    print_bins();
+}
+
+void test_tiny_bin()
+{
+    char* ptr1 = (char*)my_malloc(10);
+    char* ptr2 = (char*)my_malloc(30);
+    char* ptr3 = (char*)my_malloc(60);
+    char* ptr4 = (char*)my_malloc(100);
+    char* ptr5 = (char*)my_malloc(120);
+    
+    print_bins();
+    
+    ft_printf("\n\n");
+
+    ft_printf("ret_ptr1 = %p\n", ptr1);
+    ft_printf("ret_ptr2 = %p\n", ptr2);
+    ft_printf("ret_ptr3 = %p\n", ptr3);
+    ft_printf("ret_ptr4 = %p\n", ptr4);
+    ft_printf("ret_ptr5 = %p\n", ptr5);
+    ft_printf("--------------------\n");
+
+    // my_free(ptr);
+    // ft_printf("--------------------\n");
+    // my_free(ptr2);
+    // ft_printf("--------------------\n");
+    // my_free(ptr3);
+    // ft_printf("--------------------\n");
+    my_free(ptr4);
+    my_free(ptr5);
+
+    ft_printf("\n\n                 #### after free #####\n\n");
+    print_bins();
+}
 
 void test()
 {
@@ -31,69 +92,21 @@ void test()
 
 int main() {
 
-//    test();
-
-    // init_arena();
-    // char* ptr = (char*)my_malloc(10);
-
-//    for (int i = 1; i < 50; i++)
-//    {
-//         char* ptr = (char*)my_malloc(i);
-//         memset(ptr, 'A', i);
-//         ft_printf(" p = %p\n", &ptr);
-//         ptr = NULL;
-//    }
 
 
-my_malloc(25);
 
-    for (int i = 10; i < 20; i++)
-    {
-        my_malloc(i);
-        // print_arenas(128);
-    }
-
-    
-
-    // my_malloc(100);
-    // print_arena(100);
-
-    // for (int i = 0; i < 101; i++)
+    // for (int i = 10; i < 15; i++)
     // {
-    //     my_malloc(512);
-    //     print_arena(512);
+    //     my_malloc(i);
+    //     // print_arenas(128);
     // }
 
-    // size_t size = 600;
-    // my_malloc(600);
-    // print_arenas(600);
-  
     
-    char* ptr = (char*)my_malloc(200);
-    char* ptr2 = (char*)my_malloc(200);
-    char* ptr3 = (char*)my_malloc(200);
-    char* ptr4 = (char*)my_malloc(700);
-    char* ptr5 = (char*)my_malloc(600);
-    
-    print_bins();
-    
-    ft_printf("\n\n");
+    test_tiny_bin();
 
-    ft_printf("ret_ptr1 = %p\n", ptr);
-    ft_printf("ret_ptr2 = %p\n", ptr2);
-    ft_printf("ret_ptr3 = %p\n", ptr3);
-    ft_printf("--------------------\n");
-
-    my_free(ptr);
-    ft_printf("--------------------\n");
-    my_free(ptr2);
-    ft_printf("--------------------\n");
-    my_free(ptr3);
-    ft_printf("--------------------\n");
-    my_free(ptr4);
-
-    ft_printf("\n\n                 #### after free #####\n\n");
-    print_bins();
+  exit(0);
+    // LARGE BIN
+    test_large_bin();
 
     return 0;
 }

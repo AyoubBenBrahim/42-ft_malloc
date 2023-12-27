@@ -9,6 +9,7 @@ void split_bin(t_bin* best_fit_bin, size_t size)  // refer to Marwan Burelle's p
     new_free_bin->next = best_fit_bin->next;
     new_free_bin->prev = best_fit_bin;
     new_free_bin->is_free = TRUE;
+    new_free_bin->parent_arena = best_fit_bin->parent_arena;
 
     best_fit_bin->size = size;
     best_fit_bin->next = new_free_bin;
@@ -86,14 +87,14 @@ t_bin *append_new_bin(t_arena *best_fit_arena , t_bins_type binType, size_t size
     
     new_bin = (t_bin *)((void *)last_prev_bin + BIN_HEADER_SIZE + last_prev_bin->size);
     last_prev_bin->next = new_bin;
-  
 
     new_bin->size = size;
     new_bin->next = NULL;
     new_bin->prev = last_prev_bin;
     new_bin->is_free = FALSE;
-    // global_arena("global_arena = %p\n", global_arena);
+    new_bin->parent_arena = best_fit_arena;
     new_bin->magic_number = generateMagicNumber();
+
     set_last_bin_in_arena(&best_fit_arena, binType, new_bin);
 
     return new_bin;
