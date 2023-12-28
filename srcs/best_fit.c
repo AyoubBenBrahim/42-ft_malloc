@@ -27,7 +27,7 @@ t_arena* find_best_fit_arena(t_bins_type binType, size_t size)
     size_t best_fit_size = -1;
 
     while (curr_arena) {
-        if (curr_arena->bin_type == binType && curr_arena->free_size >= size){ // && !curr_arena->free_size) {
+        if (curr_arena->bin_type == binType && curr_arena->free_size >= size) {
             if (curr_arena->free_size == size) {
                 return curr_arena;
             }
@@ -72,11 +72,13 @@ t_bin *get_last_bin_in_arena(t_arena *arena, t_bins_type binType) {
     return (binType == TINY) ? (t_bin *)((void *)arena->last_tiny_bin) : (t_bin *)((void *)arena->last_small_bin);
 }
 
-void set_last_bin_in_arena(t_arena **arena , t_bins_type binType, t_bin *bin) {
+void set_last_bin_in_arena(t_bin *bin) {
+    t_arena *arena = bin->parent_arena;
+    t_bins_type binType = arena->bin_type;
     if (binType == TINY) {
-        (*arena)->last_tiny_bin = bin;
+        arena->last_tiny_bin = bin;
     } else if (binType == SMALL) {
-        (*arena)->last_small_bin = bin;
+        arena->last_small_bin = bin;
     }
 }
 
@@ -93,9 +95,9 @@ t_bin *append_new_bin(t_arena *best_fit_arena , t_bins_type binType, size_t size
     new_bin->prev = last_prev_bin;
     new_bin->is_free = FALSE;
     new_bin->parent_arena = best_fit_arena;
-    new_bin->magic_number = generateMagicNumber();
+    new_bin->magic_number = generateMagicNumber(new_bin->parent_arena);
 
-    set_last_bin_in_arena(&best_fit_arena, binType, new_bin);
+    set_last_bin_in_arena(new_bin);
 
     return new_bin;
 }
@@ -123,7 +125,7 @@ t_bin *find_best_fit(t_bins_type binType, size_t size) {
         }
         
         // best_fit_arena->free_size -= size + BIN_HEADER_SIZE;
-        // we only need to update the free_size when we create a new arena 
+        // we only need to update the free_size when we create a new arena
         // or when we free a bin or when we append a new bin
         
 

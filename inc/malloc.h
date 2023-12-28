@@ -11,10 +11,12 @@
 # include <string.h>
 # include <stdlib.h>
 #include <sys/_types/_uintptr_t.h>
+#include <pthread.h>
 
 # include <assert.h>
 # define ASSERT assert
 
+// pthread_mutex_t mallocMutex = PTHREAD_MUTEX_INITIALIZER;
 
 # define PAGE_SIZE		4096
 
@@ -49,6 +51,12 @@ typedef enum        e_bool
     TRUE
 }                   t_bool;
 
+typedef enum e_bins_type {
+    TINY,
+    SMALL,
+    LARGE
+} t_bins_type;
+
 typedef struct s_bin {
     size_t          size;
     struct s_bin	*prev;
@@ -59,27 +67,25 @@ typedef struct s_bin {
 }				t_bin;
 
 
-typedef enum e_bins_type {
-    TINY,
-    SMALL,
-    LARGE
-} t_bins_type;
 
 typedef struct	s_arena {
 	struct s_arena	*next;
     struct s_arena	*prev;
-    struct s_arena  *last;
+    struct s_arena  *tail;
     struct s_bin	*last_tiny_bin;
     struct s_bin	*last_small_bin;
     t_bins_type     bin_type;
-    size_t			allocated_size;
+    size_t			mapped_size;
 	size_t			free_size;
 	size_t			allocated_bins_count;
-    // t_bool          is_full;
 }				t_arena;
 
 t_arena         *global_arena;
 
+void            *ft_malloc(size_t size);
+void            ft_free(void* ptr);
+void            *safe_malloc(size_t size);
+void            safe_free(void* ptr);
 void            *my_malloc(size_t size);
 void            my_free(void* ptr);
 
@@ -96,25 +102,25 @@ t_bins_type     get_bins_type(size_t size);
 void            *my_malloc(size_t size);
 t_bins_type     get_bins_type(size_t size);
 
-void            print_arenas(int size);
+void            print_arena(t_arena *arena);
+void            print_arenas();
 void            print_bins();
 
 t_bin           *get_last_bin_in_arena(t_arena *arena, t_bins_type binType);
-void            set_last_bin_in_arena(t_arena **arena, t_bins_type binType, t_bin *bin);
+void            set_last_bin_in_arena( t_bin *bin);
 
 t_bin           *append_new_bin(t_arena *arena, t_bins_type binType, size_t size);
 
 t_bin           *create_new_arena(t_bins_type bins_type, size_t size);
 
-t_bool          is_valid_ptr(void *ptr);
+t_bool          is_within_the_heap(void *ptr);
 
-unsigned int    generateMagicNumber();
-
-
+unsigned int    generateMagicNumber(t_arena *parent_arena);
+t_bool         is_magic_number_valid(t_bin *bin);
 
 
 t_bool          free_large_bin(void* bin);
 t_bool          free_tiny_small_bin(void* bin);
-
+t_bin           *coalesce_adjacent_free_bins(t_bin* curr_free_bin);
 
 #endif

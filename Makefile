@@ -6,6 +6,7 @@ CFLAGS	=	-g #-Werror -Wextra -Wall
 
 FUNCTIONS	=	best_fit.c\
 				create_new_arena.c\
+				dynamic_memory_api.c\
 				find.c\
 				free.c\
 				handle_large_bins.c\

@@ -9,15 +9,38 @@ void print_headers_info(int requested_size)
     ft_printf("sizeof(t_bin) + requested_size = %zu\n\n", sizeof(t_bin) + requested_size);
 }
 
-void print_arenas(int requested_size)
+void print_arena(t_arena *arena)
 {
-   print_headers_info(requested_size);
+  
+    ft_printf("arena->last = %p\n", arena->tail);
+    int bins_type = arena->bin_type;
 
+    if (bins_type == TINY)
+        ft_printf("arena->bin_type = TINY\n");
+    else if (bins_type == SMALL)
+        ft_printf("arena->bin_type = SMALL\n");
+    else
+        ft_printf("arena->bin_type = LARGE\n");
+
+    ft_printf("arena->nbr_bins = %zu\n", arena->allocated_bins_count);
+
+    ft_printf("arena->free_size = %zu\n", arena->free_size);
+    ft_printf("\n");
+}
+
+void print_arenas()
+{
   t_arena *current = global_arena;
+  if (!current)
+  {
+    ft_printf("No arenas\n");
+    return;
+  }
   while (current)
   {
+    ft_printf("| %p --->| ** %p ** --> | %p |\n", current->prev, current, current->next);
     ft_printf("arena = %p\n", current);
-    ft_printf("arena->last = %p\n", current->last);
+    ft_printf("arena->tail = %p\n", current->tail);
     int bins_type = current->bin_type;
 
     if (bins_type == TINY)
@@ -39,11 +62,18 @@ void print_arenas(int requested_size)
 void print_bins()
 {
     t_arena *current = global_arena;
+    if (!current)
+    {
+        ft_printf("No arenas\n");
+        return;
+    }
+
     int i = 1;
     while (current)
     {
         ft_printf("*******arena [%d] = %p *******\n", i++, current);
         ft_printf("%p --> %p --> %p\n", current->prev, current, current->next);
+        
         t_bin *bin = (t_bin *)(current + 1);
         while (bin)
         {

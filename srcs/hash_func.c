@@ -1,7 +1,7 @@
 #include "../inc/malloc.h"
 
-unsigned int generateMagicNumber() {
-    uintptr_t ptr = (uintptr_t)global_arena;
+unsigned int generateMagicNumber(t_arena *parent_arena) {
+    uintptr_t ptr = (uintptr_t)parent_arena;
     // void *ptr = (void *)global_arena;
     size_t size = sizeof(ptr);
 
