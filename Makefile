@@ -9,7 +9,6 @@ FUNCTIONS	=	best_fit.c\
 				dynamic_memory_api.c\
 				find.c\
 				free.c\
-				handle_large_bins.c\
 				hash_func.c\
 				main.c\
 				malloc.c\

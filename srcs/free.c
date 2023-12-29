@@ -53,7 +53,7 @@ t_bin *coalesce_adjacent_free_bins(t_bin* curr_free_bin) {
         if (next_bin->next)
             next_bin->next->prev = curr_free_bin;
         
-        arena->allocated_bins_count--;
+        // arena->allocated_bins_count--;
     }
 
     if (prev_bin && prev_bin->is_free) {
@@ -63,7 +63,7 @@ t_bin *coalesce_adjacent_free_bins(t_bin* curr_free_bin) {
         if (curr_free_bin->next)
             curr_free_bin->next->prev = prev_bin;
 
-        arena->allocated_bins_count--;
+        // arena->allocated_bins_count--;
 
         merged_bin = prev_bin;
     }
@@ -201,7 +201,7 @@ if (merged_bin && !merged_bin->next && !merged_bin->prev) {
 
 ft_printf("\nafter Merge\n");
 t_arena* arena = (t_arena*)((char*)merged_bin->parent_arena);
-ft_printf("total_bins_count = %zu\n", arena->allocated_bins_count);
+// ft_printf("total_bins_count = %zu\n", arena->allocated_bins_count);
 ft_printf("mapped_size = %zu\n", arena->mapped_size);
 ft_printf("free_size = %zu\n", arena->free_size);
 ft_printf("mapped_size - free_size = %zu\n", arena->mapped_size - arena->free_size);

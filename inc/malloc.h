@@ -16,21 +16,46 @@
 # include <assert.h>
 # define ASSERT assert
 
-// pthread_mutex_t mallocMutex = PTHREAD_MUTEX_INITIALIZER;
+
+// b is a multiple of a if b = na
+// The size of these zones must be a multiple of getpagesize().
+// means that the size of the zone must be a multiple of 4096
+// as b = na, zone_size = n * getpagesize() 
+// zone_size % getpagesize() == 0
+
+/*
+
+"(3*4096) - ((82 + 40) * 100 + 72)" = 16
+*************
+
+"(4*4096) - ((123 + 40) * 100 + 72)" = 12
+
+
+"(16*4096) - ((614 + 40) * 100 + 72)" = 64
+
+*/
+
+
 
 # define PAGE_SIZE		4096
+# define T_BIN_CAPACITY   128// (3*4096) / (82+40) = 100.7
+# define S_BIN_CAPACITY   128 // (16*4096) / (614+40) = 100.2
+# define CAPACITY 136
 
-# define BIN_CAPACITY 128
-
-# define TINY_BINS_ARENA_PAGE (4 * PAGE_SIZE) // 16KB
-# define TINY_BIN_SIZE (TINY_BINS_ARENA_PAGE / BIN_CAPACITY) // 128
+# define TINY_BINS_ARENA_PAGE (4 * PAGE_SIZE) // 12K 12288
+# define TINY_BIN_SIZE (TINY_BINS_ARENA_PAGE / CAPACITY) 
 
 # define SMALL_BINS_ARENA_PAGE (16 * PAGE_SIZE) // 65K 65536
-# define SMALL_BIN_SIZE (SMALL_BINS_ARENA_PAGE / BIN_CAPACITY) // 512
+# define SMALL_BIN_SIZE ALIGN8(SMALL_BINS_ARENA_PAGE / CAPACITY) // 512
 
 #define IS_TINY(x) (x <= TINY_BIN_SIZE)
 #define IS_SMALL(x) (x > TINY_BIN_SIZE && x <= SMALL_BIN_SIZE)
 #define IS_LARGE(x) (x > SMALL_BIN_SIZE)
+
+/*
+* sizeof(t_arena) = 72 = 0x48
+* sizeof(t_bin) = 40 = 0x28
+*/
 
 # define ARENA_HEADER_SIZE sizeof(t_arena)
 # define BIN_HEADER_SIZE sizeof(t_bin)
@@ -77,7 +102,7 @@ typedef struct	s_arena {
     t_bins_type     bin_type;
     size_t			mapped_size;
 	size_t			free_size;
-	size_t			allocated_bins_count;
+	// size_t			allocated_bins_count;
 }				t_arena;
 
 t_arena         *global_arena;
@@ -95,7 +120,6 @@ t_bin*          find_best_fit(t_bins_type binType, size_t size);
 t_bin*          find_best_fit_bin(t_arena* arena, size_t size);
 t_arena*        find_best_fit_arena(t_bins_type binType, size_t size);
 void            split_bin(t_bin* bin, size_t size);
-void            *handle_large_bins(t_bins_type bins_type, size_t size);
 
 t_bins_type     get_bins_type(size_t size);
 
@@ -105,6 +129,7 @@ t_bins_type     get_bins_type(size_t size);
 void            print_arena(t_arena *arena);
 void            print_arenas();
 void            print_bins();
+void            print_headers_info(int requested_size);
 
 t_bin           *get_last_bin_in_arena(t_arena *arena, t_bins_type binType);
 void            set_last_bin_in_arena( t_bin *bin);

@@ -118,7 +118,7 @@ t_bin *find_best_fit(t_bins_type binType, size_t size) {
         if (best_fit_bin->size > size + BIN_HEADER_SIZE) {
             ASSERT(best_fit_bin->size > size + BIN_HEADER_SIZE);
             split_bin(best_fit_bin, size);
-            best_fit_arena->allocated_bins_count++;
+            // best_fit_arena->allocated_bins_count++;
         } else {
             best_fit_bin->is_free = FALSE;
             best_fit_bin->size = size;
@@ -130,15 +130,14 @@ t_bin *find_best_fit(t_bins_type binType, size_t size) {
         
 
         return best_fit_bin;
-    } else //if (best_fit_arena && !best_fit_bin) 
+    } else
     {
         ASSERT(best_fit_bin == NULL);
         ASSERT(best_fit_arena != NULL);
-        ft_printf("** append_new_bin ** \n");
         t_bin *new_bin = append_new_bin(best_fit_arena, binType, size);
 
         best_fit_arena->free_size -= size + BIN_HEADER_SIZE;
-        best_fit_arena->allocated_bins_count++;
+        // best_fit_arena->allocated_bins_count++;
         return new_bin;
     }
 
