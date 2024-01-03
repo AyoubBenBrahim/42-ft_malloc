@@ -55,72 +55,19 @@ void test_tiny_bin()
         ft_free(ptr700);
 
         ft_free(ptr1);
-        // char* ptr10 = (char*)ft_malloc(60);
-    // ft_free(ptr3);
-    // ft_free(ptr4);
-    // ft_printf("test double free------>>\n");
-    // ft_free(ptr2);
-    // ft_free(ptr8);
+
 
     ft_printf("\n\n                 #### after free #####\n\n");
     print_bins();
 }
 
-void test()
-{
-    t_bin *bin = (t_bin*)malloc(sizeof(t_bin));
-    ft_printf(" sizeof(t_bin)              = %zu\n", sizeof(t_bin));                // 40
-    ft_printf(" bin                        = %p\n", bin);                          // 0x7ff968c05950
-    ft_printf("(void *)bin                 = %p\n", (void *)bin);                  // 0x7ff968c05950
 
-    ft_printf("(void *)bin+1               = %p\n", (void *)bin + 1);              // 0x7ff968c05951
-
-    ft_printf("bin+sizeof(t_bin)           = %p\n", bin + sizeof(t_bin));          // 0x7fb4e1c05f90 
-    // incorrect to add sizeof(t_bin) directly to the pointer. 
-
-    ft_printf(" bin + 1                    = %p\n", bin + 1);                      // 0x7ff968c05978
-    // adds 1 to the pointer bin <=> sizeof(t_bin) * 1
-
-     ft_printf(" (t_bin *)(bin + 1)        = %p\n", (t_bin *)(bin + 1));           // 0x7ff968c05978
-
-    ft_printf("(void *)bin+sizeof(t_bin)   = %p\n", (void *)bin+sizeof(t_bin));    // 0x7ff968c05978
-    ft_printf("(char *)bin + sizeof        = %p\n", (char *)bin + sizeof(t_bin) ); // 0x7ff968c05978 
-
-    ft_printf("(t_bin *)((void *)bin + sizeof  )      = %p\n", (t_bin *)((void *)bin + sizeof(t_bin)) ); // 0x7ff968c05978
-
-    ft_printf("(void *)((void *)best_fit + sizeof(t_bin)) = %p\n", (void *)((void *)bin + sizeof(t_bin))); // 0x7ff968c05978
-    exit(0);
-}
 
 int main() {
-    // char *ptr1 = (char *)my_malloc(TINY_BIN_SIZE);
-    for (int i = 1; i <= 102; i++)
-    {
-        my_malloc(TINY_BIN_SIZE);
-    }
-    // char *ptr2 = (char *)my_malloc(121);
 
- 
+    char *ptr = (char*)ft_calloc(8, 8);
+    ft_printf("ptr = %s\n", ptr);
 
-  for (int i = 1; i <= 100; i++)
-    {
-        my_malloc(SMALL_BIN_SIZE);
-    }
-    // char *ptr9 = (char *)my_malloc(80);
-    // my_free(ptr7);
-    //  char *ptr22 = (char *)my_malloc(8);
-    // my_free(ptr9);
-
-    print_bins();
-    print_arenas();
-
-    print_headers_info(0);
-    exit(0);
-    test_tiny_bin();
-
-  exit(0);
-    // LARGE BIN
-    test_large_bin();
 
     return 0;
 }

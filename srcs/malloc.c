@@ -1,6 +1,4 @@
 #include "../inc/malloc.h"
-#include <stddef.h>
-#include <stdlib.h>
 
 t_bins_type get_bins_type(size_t size) {
   if (IS_TINY(size))
@@ -24,7 +22,7 @@ void *my_malloc(size_t size) {
 
   char *bin_type_str = (bins_type == TINY) ? "TINY" : (bins_type == SMALL) ? "SMALL" : "LARGE";
   
-  // ft_printf("SMALL_BIN_SIZE = %zu\n", SMALL_BIN_SIZE);
+  // ft_printf("SMALL_BIN_MAX = %zu\n", SMALL_BIN_MAX);
   // ft_printf("size = %zu\n", size);
   // ft_printf("bin_type = %s\n", bin_type_str);
   // exit(0);

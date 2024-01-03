@@ -117,12 +117,12 @@ void set_last_bin_in_arena(t_bin *bin) {
 }
 
 /*
-handle this case where free_size == TINY_BIN_SIZE or SMALL_BIN_SIZE
+handle this case where free_size == TINY_BIN_MAX or SMALL_BIN_MAX
 
-char *ptr1 = (char *)my_malloc(TINY_BIN_SIZE);
+char *ptr1 = (char *)my_malloc(TINY_BIN_MAX);
     for (int i = 1; i <= 100; i++)
     {
-        my_malloc(TINY_BIN_SIZE);
+        my_malloc(TINY_BIN_MAX);
     }
 
     char *ptr40 = (char *)my_malloc(64);
@@ -174,7 +174,7 @@ t_bin *append_new_bin(t_arena *best_fit_arena , t_bins_type binType, size_t size
 
     
 
-    // if (best_fit_arena->free_size == TINY_BIN_SIZE || best_fit_arena->free_size == SMALL_BIN_SIZE)
+    // if (best_fit_arena->free_size == TINY_BIN_MAX || best_fit_arena->free_size == SMALL_BIN_MAX)
     // {
 
 

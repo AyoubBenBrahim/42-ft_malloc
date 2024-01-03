@@ -114,6 +114,8 @@ int main()
     printf("ALIGN8(800) = %zu\n", ALIGN8(800));
     printf("ALIGN8(1024) = %zu\n", ALIGN8(1024));
 
+    printf("ALIGN8(1200) = %zu\n", ALIGN8(1200));
+
 
 
     return 0;

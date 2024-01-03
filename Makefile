@@ -15,6 +15,7 @@ FUNCTIONS	=	best_fit.c\
 				memory_dump.c\
 				new_mmap.c\
 				realloc.c\
+				calloc.c\
 				
 				
 

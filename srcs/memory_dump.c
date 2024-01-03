@@ -1,8 +1,8 @@
 #include "../inc/malloc.h"
 
 void print_headers_info(int requested_size) {
-    ft_printf("TINY_BIN_SIZE = %zu\n", TINY_BIN_SIZE);
-    ft_printf("SMALL_BIN_SIZE = %zu\n", SMALL_BIN_SIZE);
+    ft_printf("TINY_BIN_MAX = %zu\n", TINY_BIN_MAX);
+    ft_printf("SMALL_BIN_MAX = %zu\n", SMALL_BIN_MAX);
     
   ft_printf("requested_size = %d = 0x%x\n", requested_size, requested_size);
   ft_printf("sizeof(t_arena) = %zu = 0x%lx\n", sizeof(t_arena),

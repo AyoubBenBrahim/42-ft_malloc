@@ -154,7 +154,7 @@ t_bool free_tiny_small_bin(void* bin) {
 
     arena->free_size += ((t_bin*)bin)->size; // pre-existing bin, means it has already a BIN_HEADER_SIZE, we still need it for future allocations
 
-    if (arena->free_size == TINY_BIN_SIZE || arena->free_size == SMALL_BIN_SIZE) {
+    if (arena->free_size == TINY_BIN_MAX || arena->free_size == SMALL_BIN_MAX) {
         // if (!is_out_of_arena_boundary(arena, arena->free_size))
         // {
         //     ft_printf("APPEND NEW BIN\n");

@@ -16,37 +16,37 @@
 # include <assert.h>
 # define ASSERT assert
 
-
-// b is a multiple of a if b = na
-// The size of these zones must be a multiple of getpagesize().
-// means that the size of the zone must be a multiple of 4096
-// as b = na, zone_size = n * getpagesize() 
-// zone_size % getpagesize() == 0
-
 /*
-
-TINY_BINS
-
-"(4096*4)/(136)" = 120
-
-"(4096*4)/(120+40)" = 102
-
-"(4*4096) - ((120 + 40) * 100 + 64)" = 320
-"(4096*4) - ((120+40) * 102 + 64)" = 0
-
-arena->free_size = 320
-
-
-
-SMALL_BINS
-
- "(4096*26)/104" = 1024
- "(4096*26)/(1024+40)" = 100
- "(4096*26) - ((1024+40) * 100 + 64)" = 32
-
-"(4096*26) - (((4096*26)/(104)+40) * 100 + 64)" = 32
+**
+** b is a multiple of a if b = na
+** The size of these zones must be a multiple of getpagesize().
+** means that the size of the zone must be a multiple of 4096
+** as b = na, zone_size = n * getpagesize() 
+** zone_size % getpagesize() == 0
+** 
+** check script in /srcs/helpers/zone_size.c
+** 
+** TINY_BINS
+** 
+** "(4096*4)/(136)" = 120
+** 
+** "(4096*4)/(120+40)" = 102
+** 
+** "(4*4096) - ((120 + 40) * 100 + 64)" = 320
+** "(4096*4) - ((120+40) * 102 + 64)" = 0
+** 
+** arena->free_size = 320 (we can fit 2 bins 160+160)
+** 
+** 
+** SMALL_BINS
+** 
+**  "(4096*26)/104" = 1024
+**  "(4096*26)/(1024+40)" = 100
+**  "(4096*26) - ((1024+40) * 100 + 64)" = 32
+** 
+** "(4096*26) - (((4096*26)/(104)+40) * 100 + 64)" = 32 nzr3o fiha limoun
+** 
 */
-
 
 
 # define PAGE_SIZE		4096
@@ -54,14 +54,14 @@ SMALL_BINS
 # define S_BIN_CAPACITY   104 // size = 1024
 
 # define TINY_BINS_ARENA_PAGE (4 * PAGE_SIZE) // 12K 12288
-# define TINY_BIN_SIZE (TINY_BINS_ARENA_PAGE / T_BIN_CAPACITY) 
+# define TINY_BIN_MAX (TINY_BINS_ARENA_PAGE / T_BIN_CAPACITY) 
 
 # define SMALL_BINS_ARENA_PAGE (26 * PAGE_SIZE) // 104K 106496
-# define SMALL_BIN_SIZE (SMALL_BINS_ARENA_PAGE / S_BIN_CAPACITY) // 
+# define SMALL_BIN_MAX (SMALL_BINS_ARENA_PAGE / S_BIN_CAPACITY) // 
 
-#define IS_TINY(x) (x <= TINY_BIN_SIZE)
-#define IS_SMALL(x) (x > TINY_BIN_SIZE && x <= SMALL_BIN_SIZE)
-#define IS_LARGE(x) (x > SMALL_BIN_SIZE)
+#define IS_TINY(x) (x <= TINY_BIN_MAX)
+#define IS_SMALL(x) (x > TINY_BIN_MAX && x <= SMALL_BIN_MAX)
+#define IS_LARGE(x) (x > SMALL_BIN_MAX)
 
 /*
 * sizeof(t_arena) = 64 = 0x40
@@ -113,28 +113,35 @@ typedef struct	s_arena {
     t_bins_type     bin_type;
     size_t			mapped_size;
 	size_t			free_size;
-	// size_t			allocated_bins_count;
 }				t_arena;
 
 t_arena         *global_arena;
 
 void            *ft_malloc(size_t size);
-void            ft_free(void* ptr);
 void            *safe_malloc(size_t size);
-void            safe_free(void* ptr);
 void            *my_malloc(size_t size);
+
+void            ft_free(void* ptr);
+void            safe_free(void* ptr);
 void            my_free(void* ptr);
+
+void            *ft_calloc(size_t count, size_t size);
+void            *safe_calloc(size_t count, size_t size);
+void            *my_calloc(size_t count, size_t size);
+
+void            *ft_realloc(void *ptr, size_t size);
+void            *safe_realloc(void *ptr, size_t size);
+void            *my_realloc(void *ptr, size_t size);
 
 t_bool          check_sys_limit(size_t size);
 void*           request_new_page_mmap(t_bins_type bins_type, size_t mapped_size);
 t_bin*          find_best_fit(t_bins_type binType, size_t size);
 t_bin*          find_best_fit_bin(t_arena* arena, size_t size);
 t_arena*        find_best_fit_arena(t_bins_type binType, size_t size);
-t_bool            split_bin(t_bin* bin, size_t size);
+t_bool          split_bin(t_bin* bin, size_t size);
 
 t_bins_type     get_bins_type(size_t size);
 
-void            *my_malloc(size_t size);
 t_bins_type     get_bins_type(size_t size);
 
 void            print_arena(t_arena *arena);
