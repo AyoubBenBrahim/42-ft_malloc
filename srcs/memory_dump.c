@@ -1,6 +1,9 @@
 #include "../inc/malloc.h"
 
 void print_headers_info(int requested_size) {
+    ft_printf("TINY_BIN_SIZE = %zu\n", TINY_BIN_SIZE);
+    ft_printf("SMALL_BIN_SIZE = %zu\n", SMALL_BIN_SIZE);
+    
   ft_printf("requested_size = %d = 0x%x\n", requested_size, requested_size);
   ft_printf("sizeof(t_arena) = %zu = 0x%lx\n", sizeof(t_arena),
             sizeof(t_arena));
@@ -51,11 +54,28 @@ void print_arenas() {
 
     // ft_printf("arena->nbr_bins = %zu\n", curr->allocated_bins_count);
 
+    ft_printf("arena->mappped_size = %zu\n", curr->mapped_size);
     ft_printf("arena->free_size = %zu\n", curr->free_size);
     ft_printf("\n");
     curr = curr->next;
   }
   ft_printf("===============================================\n");
+}
+
+void print_bin(t_bin *bin) {
+  if (!bin) {
+    ft_printf("NULL Bin\n");
+    return;
+  }
+  ft_printf("bin = %p\n", bin);
+  ft_printf("bin->parent_arena = %p\n", bin->parent_arena);
+  ft_printf("bin->size = %zu = 0x%lx\n", bin->size, bin->size);
+  char *is_free = bin->is_free ? "TRUE" : "FALSE";
+  ft_printf("bin->is_free = %s\n", is_free);
+  ft_printf("bin->magic_number = %u\n", bin->magic_number);
+  ft_printf("bin->next = %p\n", bin->next);
+  ft_printf("bin->prev = %p\n", bin->prev);
+  ft_printf("\n");
 }
 
 void print_bins() {

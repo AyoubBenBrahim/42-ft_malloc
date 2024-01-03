@@ -25,35 +25,46 @@
 
 /*
 
-"(3*4096) - ((82 + 40) * 100 + 72)" = 16
-*************
+TINY_BINS
 
-"(4*4096) - ((123 + 40) * 100 + 72)" = 12
+"(4096*4)/(136)" = 120
+
+"(4096*4)/(120+40)" = 102
+
+"(4*4096) - ((120 + 40) * 100 + 64)" = 320
+"(4096*4) - ((120+40) * 102 + 64)" = 0
+
+arena->free_size = 320
 
 
-"(16*4096) - ((614 + 40) * 100 + 72)" = 64
 
+SMALL_BINS
+
+ "(4096*26)/104" = 1024
+ "(4096*26)/(1024+40)" = 100
+ "(4096*26) - ((1024+40) * 100 + 64)" = 32
+
+"(4096*26) - (((4096*26)/(104)+40) * 100 + 64)" = 32
 */
 
 
 
 # define PAGE_SIZE		4096
-# define T_BIN_CAPACITY   128// (3*4096) / (82+40) = 100.7
-# define S_BIN_CAPACITY   128 // (16*4096) / (614+40) = 100.2
-# define CAPACITY 136
+# define T_BIN_CAPACITY   136 // size = 120
+# define S_BIN_CAPACITY   104 // size = 1024
 
 # define TINY_BINS_ARENA_PAGE (4 * PAGE_SIZE) // 12K 12288
-# define TINY_BIN_SIZE (TINY_BINS_ARENA_PAGE / CAPACITY) 
+# define TINY_BIN_SIZE (TINY_BINS_ARENA_PAGE / T_BIN_CAPACITY) 
 
-# define SMALL_BINS_ARENA_PAGE (16 * PAGE_SIZE) // 65K 65536
-# define SMALL_BIN_SIZE ALIGN8(SMALL_BINS_ARENA_PAGE / CAPACITY) // 512
+# define SMALL_BINS_ARENA_PAGE (26 * PAGE_SIZE) // 104K 106496
+# define SMALL_BIN_SIZE (SMALL_BINS_ARENA_PAGE / S_BIN_CAPACITY) // 
 
 #define IS_TINY(x) (x <= TINY_BIN_SIZE)
 #define IS_SMALL(x) (x > TINY_BIN_SIZE && x <= SMALL_BIN_SIZE)
 #define IS_LARGE(x) (x > SMALL_BIN_SIZE)
 
 /*
-* sizeof(t_arena) = 72 = 0x48
+* sizeof(t_arena) = 64 = 0x40
 * sizeof(t_bin) = 40 = 0x28
 */
 
@@ -119,7 +130,7 @@ void*           request_new_page_mmap(t_bins_type bins_type, size_t mapped_size)
 t_bin*          find_best_fit(t_bins_type binType, size_t size);
 t_bin*          find_best_fit_bin(t_arena* arena, size_t size);
 t_arena*        find_best_fit_arena(t_bins_type binType, size_t size);
-void            split_bin(t_bin* bin, size_t size);
+t_bool            split_bin(t_bin* bin, size_t size);
 
 t_bins_type     get_bins_type(size_t size);
 
@@ -128,6 +139,7 @@ t_bins_type     get_bins_type(size_t size);
 
 void            print_arena(t_arena *arena);
 void            print_arenas();
+void            print_bin(t_bin *bin);
 void            print_bins();
 void            print_headers_info(int requested_size);
 
@@ -148,4 +160,6 @@ t_bool          free_large_bin(void* bin);
 t_bool          free_tiny_small_bin(void* bin);
 t_bin           *coalesce_adjacent_free_bins(t_bin* curr_free_bin);
 
+
+t_bool is_out_of_arena_boundary(t_arena* arena, size_t size);
 #endif

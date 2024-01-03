@@ -93,17 +93,29 @@ void test()
 }
 
 int main() {
-    for (int i = 1; i <= 100; i++)
+    // char *ptr1 = (char *)my_malloc(TINY_BIN_SIZE);
+    for (int i = 1; i <= 102; i++)
     {
-        my_malloc(SMALL_BIN_SIZE+1);
+        my_malloc(TINY_BIN_SIZE);
     }
-    // print_arenas();
+    // char *ptr2 = (char *)my_malloc(121);
+
+ 
+
+  for (int i = 1; i <= 100; i++)
+    {
+        my_malloc(SMALL_BIN_SIZE);
+    }
+    // char *ptr9 = (char *)my_malloc(80);
+    // my_free(ptr7);
+    //  char *ptr22 = (char *)my_malloc(8);
+    // my_free(ptr9);
+
     print_bins();
+    print_arenas();
 
-    ft_printf("SMALL_BIN_SIZE = %zu\n", SMALL_BIN_SIZE);
-
-print_headers_info(0);    
-exit(0) ;
+    print_headers_info(0);
+    exit(0);
     test_tiny_bin();
 
   exit(0);

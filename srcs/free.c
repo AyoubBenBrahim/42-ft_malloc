@@ -30,10 +30,11 @@ t_bool is_magic_number_valid(t_bin *bin)
     ft_printf("bin->is_free = %s\n", isfree_str);
     ft_printf("bin->magic_number = %u\n", bin->magic_number);
     ft_printf("expectedMagicNumber = %u\n", expectedMagicNumber);
-    ASSERT(bin->magic_number == expectedMagicNumber);
+    // ASSERT(bin->magic_number == expectedMagicNumber);
     if (bin->magic_number != expectedMagicNumber) {
         return FALSE;
     }
+    bin->magic_number = 0x1337;
     return TRUE;
 }
 
@@ -153,6 +154,44 @@ t_bool free_tiny_small_bin(void* bin) {
 
     arena->free_size += ((t_bin*)bin)->size; // pre-existing bin, means it has already a BIN_HEADER_SIZE, we still need it for future allocations
 
+    if (arena->free_size == TINY_BIN_SIZE || arena->free_size == SMALL_BIN_SIZE) {
+        // if (!is_out_of_arena_boundary(arena, arena->free_size))
+        // {
+        //     ft_printf("APPEND NEW BIN\n");
+        //     // exit(0);
+        //     t_bin *new_bin  = append_new_bin(arena, arena->bin_type, arena->free_size - BIN_HEADER_SIZE);
+        //     if (new_bin)
+        //     {
+        //         new_bin->parent_arena = arena;
+        //         new_bin->is_free = TRUE;
+        //         new_bin->magic_number = 1337;
+
+        //         if ((void *)new_bin + BIN_HEADER_SIZE + new_bin->size > (void *)arena->mapped_size)
+        //         {
+        //             // new_bin->size += ((void *)arena->mapped_size - (void *)new_bin - BIN_HEADER_SIZE);
+        //         ft_printf("\nnew_bin->size = %zu\n", new_bin->size);
+        //         ft_printf("end of arena = %p\n", (void *)arena + arena->mapped_size);
+        //         ft_printf("new_bin = %p\n", new_bin);
+
+        //         ft_printf("new_bin + size = %p\n", (void *)new_bin + BIN_HEADER_SIZE + new_bin->size);
+
+        //         int diff1 = ((void *)new_bin + BIN_HEADER_SIZE + new_bin->size) - (void *)arena->mapped_size;
+        //         ft_printf("diff = %d\n", diff1);
+        //         int new_size = (void *)new_bin - (void *)arena->mapped_size;
+        //         ft_printf("new_size = %d\n", new_size);
+             
+        //         exit(0);
+        //         }
+
+
+
+        //         arena->free_size = new_bin->size;
+             
+        //         return TRUE;
+        //     }
+        // }
+    }
+
     return TRUE;
 }
 
@@ -182,6 +221,9 @@ if (bin_type == LARGE) {
 free_tiny_small_bin(bin);
 
 t_bin *merged_bin = coalesce_adjacent_free_bins(bin);
+
+//    print_bin(bin);
+//                 exit(0);
 
 if (merged_bin && merged_bin->next == NULL) {
     // Update the tail bin in the arena
