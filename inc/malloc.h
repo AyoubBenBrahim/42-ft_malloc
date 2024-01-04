@@ -23,6 +23,8 @@
 ** means that the size of the zone must be a multiple of 4096
 ** as b = na, zone_size = n * getpagesize() 
 ** zone_size % getpagesize() == 0
+
+** i think they mean ASSERT(page_size % getpagesize() == 0);
 ** 
 ** check script in /srcs/helpers/zone_size.c
 ** 
@@ -49,15 +51,15 @@
 */
 
 
-# define PAGE_SIZE		4096
-# define T_BIN_CAPACITY   136 // size = 120
-# define S_BIN_CAPACITY   104 // size = 1024
+# define PAGE_SIZE          4096
+# define T_BIN_CAPACITY     136 // size = 120
+# define S_BIN_CAPACITY     104 // size = 1024
 
-# define TINY_BINS_ARENA_PAGE (4 * PAGE_SIZE) // 12K 12288
-# define TINY_BIN_MAX (TINY_BINS_ARENA_PAGE / T_BIN_CAPACITY) 
+# define TINY_PAGE (4 * PAGE_SIZE) // 12K 12288
+# define TINY_BIN_MAX (TINY_PAGE / T_BIN_CAPACITY) 
 
-# define SMALL_BINS_ARENA_PAGE (26 * PAGE_SIZE) // 104K 106496
-# define SMALL_BIN_MAX (SMALL_BINS_ARENA_PAGE / S_BIN_CAPACITY) // 
+# define SMALL_PAGE (26 * PAGE_SIZE) // 104K 106496
+# define SMALL_BIN_MAX (SMALL_PAGE / S_BIN_CAPACITY) // 
 
 #define IS_TINY(x) (x <= TINY_BIN_MAX)
 #define IS_SMALL(x) (x > TINY_BIN_MAX && x <= SMALL_BIN_MAX)
@@ -79,7 +81,7 @@
 
 #define ALIGN8(x) (((( (x) - 1) >> 3) << 3) + 8 )
 
-# define  GET_BIN_SIZE(type) (type == TINY ? TINY_BINS_ARENA_PAGE : SMALL_BINS_ARENA_PAGE)
+# define  GET_BIN_SIZE(type) (type == TINY ? TINY_PAGE : SMALL_PAGE)
 
 typedef enum        e_bool
 {
@@ -100,7 +102,7 @@ typedef struct s_bin {
     t_bool          is_free;
     unsigned int    magic_number;
     struct s_arena  *parent_arena;
-}				t_bin;
+}				    t_bin;
 
 
 
@@ -113,7 +115,7 @@ typedef struct	s_arena {
     t_bins_type     bin_type;
     size_t			mapped_size;
 	size_t			free_size;
-}				t_arena;
+}				    t_arena;
 
 t_arena         *global_arena;
 

@@ -49,7 +49,7 @@ t_bool split_bin(t_bin* best_fit_bin, size_t size)  // refer to Marwan Burelle's
     new_free_bin->magic_number = 1337;
 
     best_fit_bin->parent_arena->free_size -= BIN_HEADER_SIZE;
-ASSERT(size != 104); 
+
     return  TRUE;
 }
 
@@ -171,15 +171,6 @@ t_bin *append_new_bin(t_arena *best_fit_arena , t_bins_type binType, size_t size
     new_bin->magic_number = generateMagicNumber(new_bin->parent_arena);
     set_last_bin_in_arena(new_bin);
     best_fit_arena->free_size -= size + BIN_HEADER_SIZE;
-
-    
-
-    // if (best_fit_arena->free_size == TINY_BIN_MAX || best_fit_arena->free_size == SMALL_BIN_MAX)
-    // {
-
-
-    // }
-
 
     return new_bin;
 }

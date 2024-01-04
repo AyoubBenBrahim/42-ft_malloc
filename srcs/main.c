@@ -5,11 +5,11 @@
 
 void test_large_bin()
 {
-    char* ptr = (char*)my_malloc(200);
-    char* ptr2 = (char*)my_malloc(200);
-    char* ptr3 = (char*)my_malloc(200);
-    char* ptr4 = (char*)my_malloc(700);
-    char* ptr5 = (char*)my_malloc(600);
+    char* ptr = (char*)ft_malloc(200);
+    char* ptr2 = (char*)ft_malloc(200);
+    char* ptr3 = (char*)ft_malloc(200);
+    char* ptr4 = (char*)ft_malloc(700);
+    char* ptr5 = (char*)ft_malloc(600);
     
     print_bins();
     
@@ -20,13 +20,13 @@ void test_large_bin()
     ft_printf("ret_ptr3 = %p\n", ptr3);
     ft_printf("--------------------\n");
 
-    my_free(ptr);
+    ft_free(ptr);
     ft_printf("--------------------\n");
-    my_free(ptr2);
+    ft_free(ptr2);
     ft_printf("--------------------\n");
-    my_free(ptr3);
+    ft_free(ptr3);
     ft_printf("--------------------\n");
-    my_free(ptr4);
+    ft_free(ptr4);
 
     ft_printf("\n\n                 #### after free #####\n\n");
     print_bins();
@@ -56,7 +56,6 @@ void test_tiny_bin()
 
         ft_free(ptr1);
 
-
     ft_printf("\n\n                 #### after free #####\n\n");
     print_bins();
 }
@@ -65,18 +64,20 @@ void test_tiny_bin()
 
 int main() {
 
-    char *ptr = (char*)ft_calloc(8, 8);
-    ft_printf("ptr = %s\n", ptr);
+    // char *ptr = (char*)ft_calloc(8, 8);
+    // ft_printf("ptr = %s\n", ptr);
 
+    for (int i = 1; i <= 100; i++)
+    {
+        ft_malloc(TINY_BIN_MAX);
+    }
+    print_bins();
+    print_arenas();
 
     return 0;
 }
 
 
 /*
- 
-
-
-
 
 */
