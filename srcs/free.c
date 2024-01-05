@@ -39,7 +39,6 @@ t_bool is_magic_number_valid(t_bin *bin)
 }
 
 
-
 // Function to coalesce adjacent free bins (noun : coalescence)
 t_bin *coalesce_adjacent_free_bins(t_bin* curr_free_bin) {
     t_arena* arena = (t_arena*)((char*)curr_free_bin->parent_arena);
@@ -53,8 +52,6 @@ t_bin *coalesce_adjacent_free_bins(t_bin* curr_free_bin) {
         curr_free_bin->next = next_bin->next;
         if (next_bin->next)
             next_bin->next->prev = curr_free_bin;
-        
-        // arena->allocated_bins_count--;
     }
 
     if (prev_bin && prev_bin->is_free) {
@@ -63,8 +60,6 @@ t_bin *coalesce_adjacent_free_bins(t_bin* curr_free_bin) {
         prev_bin->next = curr_free_bin->next;
         if (curr_free_bin->next)
             curr_free_bin->next->prev = prev_bin;
-
-        // arena->allocated_bins_count--;
 
         merged_bin = prev_bin;
     }

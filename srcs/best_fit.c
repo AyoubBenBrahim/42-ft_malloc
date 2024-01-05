@@ -116,45 +116,6 @@ void set_last_bin_in_arena(t_bin *bin) {
     }
 }
 
-/*
-handle this case where free_size == TINY_BIN_MAX or SMALL_BIN_MAX
-
-char *ptr1 = (char *)my_malloc(TINY_BIN_MAX);
-    for (int i = 1; i <= 100; i++)
-    {
-        my_malloc(TINY_BIN_MAX);
-    }
-
-    char *ptr40 = (char *)my_malloc(64);
-     my_free(ptr40);
-    char *ptr7 = (char *)my_malloc(80);
-*/
-
-// void append_free_bin(t_arena *arena, t_bins_type binType, size_t size) {
-//     t_bin *last_prev_bin = get_last_bin_in_arena(arena, binType);
-//     t_bin *new_bin;
-//     ASSERT(last_prev_bin != NULL);
-    
-//     if (is_out_of_arena_boundary(arena, size))
-//     {
-//         ft_printf("** append is_out_of_arena_boundary** \n");
-//         return;
-//     }
-//     new_bin = (t_bin *)((void *)last_prev_bin + BIN_HEADER_SIZE + last_prev_bin->size);
-//     last_prev_bin->next = new_bin;
-
-//     new_bin->size = size;
-//     new_bin->next = NULL;
-//     new_bin->prev = last_prev_bin;
-//     new_bin->is_free = TRUE;
-//     new_bin->parent_arena = arena;
-//     new_bin->magic_number = generateMagicNumber(new_bin->parent_arena);
-//     set_last_bin_in_arena(new_bin);
-//     arena->free_size -= size + BIN_HEADER_SIZE;
-
-//     // return new_bin;
-// }
-
 t_bin *append_new_bin(t_arena *best_fit_arena , t_bins_type binType, size_t size) {
     t_bin *last_prev_bin = get_last_bin_in_arena(best_fit_arena, binType);
     t_bin *new_bin;
