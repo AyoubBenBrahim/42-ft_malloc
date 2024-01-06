@@ -22,9 +22,9 @@
 ** The size of these zones must be a multiple of getpagesize().
 ** means that the size of the zone must be a multiple of 4096
 ** as b = na, zone_size = n * getpagesize() 
+**
 ** zone_size % getpagesize() == 0
-
-** i think they mean ASSERT(page_size % getpagesize() == 0);
+** ASSERT(page_size % getpagesize() == 0);
 ** 
 ** check script in /srcs/helpers/zone_size.c
 ** 
@@ -136,7 +136,7 @@ void            *safe_realloc(void *ptr, size_t size);
 void            *my_realloc(void *ptr, size_t size);
 
 t_bool          check_sys_limit(size_t size);
-void*           request_new_page_mmap(t_bins_type bins_type, size_t mapped_size);
+void*           request_new_page_mmap(size_t mapped_size);
 t_bin*          find_best_fit(t_bins_type binType, size_t size);
 t_bin*          find_best_fit_bin(t_arena* arena, size_t size);
 t_arena*        find_best_fit_arena(t_bins_type binType, size_t size);
@@ -151,6 +151,8 @@ void            print_arenas();
 void            print_bin(t_bin *bin);
 void            print_bins();
 void            print_headers_info(int requested_size);
+void            show_alloc_mem();
+void            show_alloc();
 
 t_bin           *get_last_bin_in_arena(t_arena *arena, t_bins_type binType);
 void            set_last_bin_in_arena( t_bin *bin);

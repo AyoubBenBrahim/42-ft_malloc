@@ -3,6 +3,15 @@
 
 pthread_mutex_t mallocMutex = PTHREAD_MUTEX_INITIALIZER;
 
+
+
+void show_alloc_mem()
+{
+    pthread_mutex_lock(&mallocMutex);
+    show_alloc();
+    pthread_mutex_unlock(&mallocMutex);
+}
+
 void* safe_malloc(size_t size) {
     pthread_mutex_lock(&mallocMutex);
     void* ptr = my_malloc(size);

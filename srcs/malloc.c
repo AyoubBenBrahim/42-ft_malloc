@@ -14,26 +14,16 @@ void *my_malloc(size_t size) {
     return NULL;
 
   // Align the size to the nearest multiple of the page size
-  // size = align_size(size);
-  // size_t size_orig = size;
-  size = ALIGN8(size); // + sizeof(t_bin); already added
+  size = ALIGN8(size);
 
   t_bins_type bins_type = get_bins_type(size);
 
-  char *bin_type_str = (bins_type == TINY) ? "TINY" : (bins_type == SMALL) ? "SMALL" : "LARGE";
-  
-  // ft_printf("SMALL_BIN_MAX = %zu\n", SMALL_BIN_MAX);
-  // ft_printf("size = %zu\n", size);
-  // ft_printf("bin_type = %s\n", bin_type_str);
-  // exit(0);
-
-  if (bins_type == LARGE)
-  {
-    t_bin *new_bin =  create_new_arena(bins_type, size);
+  if (bins_type == LARGE) {
+    t_bin *new_bin = create_new_arena(bins_type, size);
     return (new_bin) ? (void *)(new_bin + 1) : NULL;
   }
 
-  // Find the best-fit block TINY or SMALL
+  // Find the best-fit TINY or SMALL
   t_bin *best_fit = find_best_fit(bins_type, size);
 
   // If a suitable bin is found, allocate from it

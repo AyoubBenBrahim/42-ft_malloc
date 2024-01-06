@@ -1,7 +1,4 @@
-
 #include "../inc/malloc.h"
-
-
 
 /*
 ** checking the system limit for the maximum amount of data that can be allocated (RLIMIT_DATA).
@@ -23,14 +20,11 @@ t_bool check_sys_limit(size_t size)
 }
 
 // Function to allocate memory using mmap()
-void* request_new_page_mmap(t_bins_type bins_type, size_t mapped_size)
+void* request_new_page_mmap(size_t mapped_size)
 {
     void* mem = mmap(NULL, mapped_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     if (mem == MAP_FAILED || !check_sys_limit(mapped_size))
         return NULL;
 
-        // memset(mem, 'A', mapped_size);
-
-    ft_printf("mmap = %p\n", mem);
     return (void *)mem;
 }

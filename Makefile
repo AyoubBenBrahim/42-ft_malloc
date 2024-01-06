@@ -2,12 +2,11 @@ NAME	=	ft_malloc
 
 CC		=	gcc
 
-CFLAGS	=	-g #-Werror -Wextra -Wall
+CFLAGS	=	-Werror -Wextra -Wall
 
 FUNCTIONS	=	best_fit.c\
 				create_new_arena.c\
 				dynamic_memory_api.c\
-				find.c\
 				free.c\
 				hash_func.c\
 				main.c\
@@ -16,8 +15,6 @@ FUNCTIONS	=	best_fit.c\
 				new_mmap.c\
 				realloc.c\
 				calloc.c\
-				
-				
 
 HEADERS	=		inc/malloc.h
 

@@ -14,6 +14,46 @@ void print_headers_info(int requested_size) {
             sizeof(t_bin) + requested_size);
 }
 
+/*
+TINY : 0xA0000
+0xA0020 - 0xA004A : 42 bytes
+0xA006A - 0xA00BE : 84 bytes
+SMALL : 0xAD000
+0xAD020 - 0xADEAD : 3725 bytes
+LARGE : 0xB0000
+0xB0020 - 0xBBEEF : 48847 bytes
+Total : 52698 bytes
+*/
+
+void show_alloc()
+{
+   t_arena *curr = global_arena;
+  if (!curr) {
+    ft_printf("No Arenas\n");
+    return;
+  }
+int total = 0;
+ while (curr)
+ {
+    char *bin_type = curr->bin_type == TINY ? "TINY" : curr->bin_type == SMALL ? "SMALL" : "LARGE";
+    ft_printf("%s : 0x%lx\n", bin_type, (size_t)curr);
+    t_bin *bin = (t_bin *)(curr + 1);
+    while (bin)
+    {
+      if (!bin->is_free)
+      {
+        ft_printf("0x%lx - 0x%lx : %zu bytes\n", (size_t)bin, (size_t)bin + bin->size, bin->size);
+        total += bin->size;
+      }
+      bin = bin->next;
+    }
+    curr = curr->next;
+ }
+  ft_printf("Total : %d bytes\n", total);
+
+
+}
+
 void print_arena(t_arena *arena) {
 
   ft_printf("arena->last = %p\n", arena->tail);
@@ -67,6 +107,7 @@ void print_bin(t_bin *bin) {
     ft_printf("NULL Bin\n");
     return;
   }
+  ft_printf("\n");
   ft_printf("bin = %p\n", bin);
   ft_printf("bin->parent_arena = %p\n", bin->parent_arena);
   ft_printf("bin->size = %zu = 0x%lx\n", bin->size, bin->size);
