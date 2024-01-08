@@ -119,19 +119,19 @@ typedef struct	s_arena {
 
 t_arena         *global_arena;
 
-void            *ft_malloc(size_t size);
+void            *malloc(size_t size);
 void            *safe_malloc(size_t size);
 void            *my_malloc(size_t size);
 
-void            ft_free(void* ptr);
+void            free(void* ptr);
 void            safe_free(void* ptr);
 void            my_free(void* ptr);
 
-void            *ft_calloc(size_t count, size_t size);
+void            *calloc(size_t count, size_t size);
 void            *safe_calloc(size_t count, size_t size);
 void            *my_calloc(size_t count, size_t size);
 
-void            *ft_realloc(void *ptr, size_t size);
+void            *realloc(void *ptr, size_t size);
 void            *safe_realloc(void *ptr, size_t size);
 void            *my_realloc(void *ptr, size_t size);
 

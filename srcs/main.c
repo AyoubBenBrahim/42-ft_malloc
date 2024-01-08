@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+/*
 void test_tiny_bin()
 {
     char* ptr600 = (char*)ft_malloc(600);
@@ -31,20 +31,33 @@ void test_tiny_bin()
     ft_printf("\n\n                 #### after free #####\n\n");
     print_bins();
 }
+*/
 
-//******
-
-
-//******
 
 
 int main() {
-	
-    ft_malloc(10);
-    ft_malloc(30);
-    ft_malloc(600);
-    ft_malloc(300);
-    ft_malloc(2000);
+
+    // for (int i = 1; i <= 100; i++) {
+    //   void * ptr1 = ft_malloc(10);
+    //   void * ptr2 = ft_malloc(30);
+    //   void * ptr4 = ft_malloc(300);
+
+
+    //   ptr4 = ft_realloc(ptr4, 120);
+
+
+    //     ft_free(ptr1);
+    //     ft_free(ptr2);
+
+
+    //      ptr1 = ft_malloc(50);
+    //    ptr2 = ft_malloc(70);
+   
+    // }
+
+    void * ptr1 = malloc(10);
+      void * ptr2 = malloc(30);
+      void * ptr4 = malloc(300);
 
     show_alloc_mem();
 

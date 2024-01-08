@@ -39,18 +39,19 @@ void    *safe_calloc(size_t count, size_t size) {
     return ptr;
 }
 
-void    *ft_malloc(size_t size) {
+void    *malloc(size_t size) {
+    ft_printf("start malloc\n");
     return safe_malloc(size);
 }
 
-void ft_free(void* ptr) {
+void free(void* ptr) {
     safe_free(ptr);
 }
 
-void    *ft_calloc(size_t count, size_t size) {
+void    *calloc(size_t count, size_t size) {
     return safe_calloc(count, size);
 }
 
-void* ft_realloc(void* ptr, size_t size) {
+void* realloc(void* ptr, size_t size) {
     return safe_realloc(ptr, size);
 }
