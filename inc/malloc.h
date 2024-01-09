@@ -111,10 +111,11 @@ typedef struct	s_arena {
 	size_t			free_size;
 }				    t_arena;
 
-extern t_arena         *g_arena;
+// extern t_arena         *g_arena;
 extern pthread_mutex_t g_mallocMutex;
+ t_arena         *g_arena;
 
-void            *malloc(size_t size);
+void            *ft_malloc(size_t size);
 void            *my_malloc(size_t size);
 
 void            free(void* ptr);
@@ -143,7 +144,7 @@ void            print_bin(t_bin *bin);
 void            print_bins();
 void            print_headers_info(int requested_size);
 void            show_alloc_mem();
-void            show_alloc();
+int            show_alloc(t_bins_type bin_type);
 
 t_bin           *get_last_bin_in_arena(t_arena *arena, t_bins_type binType);
 void            set_last_bin_in_arena( t_bin *bin);
@@ -171,6 +172,7 @@ size_t          ft_strlen(const char *s);
 int             ft_islower(int c);
 void            ft_strupper(char *str);
 int             ft_putchar(char c);
-int             ft_putstr(char const *s);
+long            ft_putstr(char const *s);
 char            *to_hexa(t_ull nbr);
+void            ft_putnbr(long long n);
 #endif

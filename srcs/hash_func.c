@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_CONVERT_SIZE 20
+#define MAX_CONVERT_SIZE 65
 
 static int	nbase_length(t_ull nbr, int shift)
 {
@@ -18,7 +18,7 @@ static int	nbase_length(t_ull nbr, int shift)
 
 char		*shift_bits(t_ull nbr, int mask, int shift)
 {
-	 static char convert[MAX_CONVERT_SIZE];
+	static char convert[MAX_CONVERT_SIZE];
     int			len;
 	char *str = "0123456789abcdef";
 
@@ -37,6 +37,7 @@ char		*shift_bits(t_ull nbr, int mask, int shift)
     if (mask == 15)
     {
         convert[0] = '0';
+        ft_strupper(convert);
         convert[1] = 'x';
     }
     return (convert);
@@ -65,23 +66,18 @@ char	*to_binary(t_ull nbr)
 }
 
 unsigned int generateMagicNumber(t_arena *parent_arena) {
-    uintptr_t ptr = (uintptr_t)parent_arena;
-    // uintptr_t ptr = (uintptr_t)89745682;
-    
+    uintptr_t ptr = (uintptr_t)parent_arena;  
+    // ptr = (uintptr_t)89745682;
 
     char *binaryStr = to_binary(ptr);
     unsigned int hash = 2166136261U;
-
-    // printf("%s\n", binaryStr);
-    // char *hexaStr = to_hexa(ptr);
-    // printf("%s\n", hexaStr);
 
     for (size_t i = 0; i < ft_strlen(binaryStr); i++) {
         hash ^= binaryStr[i];
         hash *= 16777619;
     }
 
-    return ptr ^ hash;
+    return hash;
 }
 
 // int main(){

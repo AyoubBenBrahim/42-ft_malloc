@@ -128,7 +128,7 @@ void my_free(void *ptr) {
 }
 
 void free(void* ptr) {
-     pthread_mutex_lock(&g_mallocMutex);
+    pthread_mutex_lock(&g_mallocMutex);
     my_free(ptr);
     pthread_mutex_unlock(&g_mallocMutex);
 }

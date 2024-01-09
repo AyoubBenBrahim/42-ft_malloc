@@ -12,7 +12,7 @@ void *my_calloc(size_t count, size_t size)
     if (!ptr)
         return NULL;
 
-    ft_memset(ptr, 'A', _size);
+    ft_memset(ptr, 0, _size);
     return ptr;
 }
 

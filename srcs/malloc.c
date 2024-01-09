@@ -18,7 +18,6 @@ void *my_malloc(size_t size) {
 
   // Align the size to the nearest multiple of the page size
    size = ALIGN8(size);
-  // size = ROUND_TO_MULTIPLE_OF_16(size);
 
   t_bins_type bins_type = get_bins_type(size);
 
@@ -40,8 +39,8 @@ void *my_malloc(size_t size) {
   return (new_bin) ? (void *)(new_bin + 1) : NULL;
 }
 
-void    *malloc(size_t size) {
-     pthread_mutex_lock(&g_mallocMutex);
+void    *ft_malloc(size_t size) {
+    pthread_mutex_lock(&g_mallocMutex);
     void* ptr = my_malloc(size);
     pthread_mutex_unlock(&g_mallocMutex);
     return ptr;

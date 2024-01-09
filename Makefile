@@ -2,12 +2,24 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = libft_malloc_$(HOSTTYPE).so
-DYNAMIC_LIB = libft_malloc.so
+# NAME = libft_malloc_$(HOSTTYPE).so
+# DYNAMIC_LIB = libft_malloc.so
+NAME	=	ft_malloccccc
 
 CC = gcc
-CFLAGS = -Werror -Wextra -Wall -g -fPIC
-FUNCTIONS = best_fit.c create_new_arena.c free.c hash_func.c malloc.c memory_dump.c new_mmap.c realloc.c calloc.c helpers.c
+CFLAGS = -Werror -Wextra -Wall -g #-fPIC
+FUNCTIONS =	best_fit.c \
+			calloc.c \
+			create_new_arena.c \
+			free.c \
+			hash_func.c \
+			helpers.c \
+			malloc.c \
+			memory_dump.c \
+			new_mmap.c \
+			realloc.c \
+			main.c 
+
 HEADERS = inc/malloc.h
 OBJDIR = objs
 SRCDIR = srcs
@@ -23,9 +35,9 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS)
 	@$(CC) $(CFLAGS) -c $< -I./inc -o $@ 
 
 $(NAME): $(OBJDIR) $(OBJS) $(HEADERS)
-	@$(CC) $(CFLAGS) $(OBJS) -shared -o $(NAME)
-	@rm -rf $(DYNAMIC_LIB)
-	@ln -s $(NAME) $(DYNAMIC_LIB)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
+# @rm -rf $(DYNAMIC_LIB)
+# @ln -s $(NAME) $(DYNAMIC_LIB)
 	@echo "\033[44m\033[93m\033[21mmalloc lib Built Successfully ............[OK]\033[49m\033[93m\n"
 
 clean:

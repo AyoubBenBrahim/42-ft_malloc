@@ -19,11 +19,13 @@ t_bool check_sys_limit(size_t size)
     return (size < limit.rlim_cur);
 }
 
-// Function to allocate memory using mmap()
 void* request_new_page_mmap(size_t mapped_size)
 {
+    if (check_sys_limit(mapped_size) == FALSE)
+        return NULL;
+
     void* mem = mmap(NULL, mapped_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-    if (mem == MAP_FAILED || !check_sys_limit(mapped_size))
+    if (mem == MAP_FAILED || mem == NULL)
         return NULL;
 
     return (void *)mem;

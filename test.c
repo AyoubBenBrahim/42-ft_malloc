@@ -1,10 +1,15 @@
 #include "inc/malloc.h"
 
-
 int main()
 {
 
-	void * ptr1 = malloc(10);
+	for (int i = 0; i < 100; i++)
+    {
+        char * ptr = (char *)malloc(100);
+        ptr[0] = 42;
+        // free(ptr);
+    }
+
     // void * ptr2 = malloc(30);
     // void * ptr4 = malloc(300);
 
@@ -12,6 +17,5 @@ int main()
     // free(ptr2);
     // free(ptr4);
 
-   // show_alloc_mem();
-
+   show_alloc_mem();
 }
