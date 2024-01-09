@@ -15,3 +15,11 @@ void *my_calloc(size_t count, size_t size)
     ft_memset(ptr, 'A', _size);
     return ptr;
 }
+
+void *calloc(size_t count, size_t size)
+{
+    pthread_mutex_lock(&g_mallocMutex);
+    void *ptr = my_calloc(count, size);
+    pthread_mutex_unlock(&g_mallocMutex);
+    return ptr;
+}

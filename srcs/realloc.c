@@ -64,7 +64,7 @@ void expand_bin(t_bin *curr_bin) {
 }
 
 void *my_realloc(void *ptr, size_t size) {
-  if (!ptr || !global_arena)
+  if (!ptr || !g_arena)
     return my_malloc(size);
   else if (size == 0) {
     my_free(ptr);
@@ -112,4 +112,11 @@ void *my_realloc(void *ptr, size_t size) {
   my_free(ptr);
 
   return new_ptr;
+}
+
+void    *realloc(void *ptr, size_t size){
+    pthread_mutex_lock(&g_mallocMutex);
+    void* new_ptr = my_realloc(ptr, size);
+    pthread_mutex_unlock(&g_mallocMutex);
+    return new_ptr;
 }

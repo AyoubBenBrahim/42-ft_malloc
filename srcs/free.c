@@ -1,12 +1,12 @@
 #include "../inc/malloc.h"
 
 t_bool is_within_the_heap(void *ptr) {
-  if (!ptr || !global_arena)
+  if (!ptr || !g_arena)
     return FALSE;
 
-  t_bins_type type = global_arena->tail->bin_type;
-  void *heap_start = global_arena;
-  void *heap_end = global_arena->tail + GET_BIN_SIZE(type);
+  t_bins_type type = g_arena->tail->bin_type;
+  void *heap_start = g_arena;
+  void *heap_end = g_arena->tail + GET_BIN_SIZE(type);
 
   if (ptr >= heap_start && ptr <= heap_end) {
     // ft_printf("ptr %p is in the heap\n", ptr);
@@ -54,15 +54,15 @@ t_bin *coalesce_adjacent_free_bins(t_bin *curr_free_bin) {
 void free_arena(t_bin *bin) {
   t_arena *arena = bin->parent_arena;
 
-  if (global_arena == arena) {
+  if (g_arena == arena) {
     if (arena->next) {
-      arena->next->tail = global_arena->tail;
-      global_arena = arena->next;
+      arena->next->tail = g_arena->tail;
+      g_arena = arena->next;
     } else
-      global_arena = NULL;
+      g_arena = NULL;
     
-  } else if (global_arena->tail == arena) {
-    global_arena->tail = arena->prev;
+  } else if (g_arena->tail == arena) {
+    g_arena->tail = arena->prev;
   }
   if (arena->prev) 
     arena->prev->next = arena->next;
@@ -74,7 +74,7 @@ void free_arena(t_bin *bin) {
   int ret = munmap((void *)arena, arena->mapped_size);
 
   if (ret == -1) {
-    ft_printf("munmap failed\n");
+    // ft_printf("munmap failed\n");
     return;
   }
 }
@@ -125,4 +125,10 @@ void my_free(void *ptr) {
     free_arena(merged_bin);
     return;
   }
+}
+
+void free(void* ptr) {
+     pthread_mutex_lock(&g_mallocMutex);
+    my_free(ptr);
+    pthread_mutex_unlock(&g_mallocMutex);
 }

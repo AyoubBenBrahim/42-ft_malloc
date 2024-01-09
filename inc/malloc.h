@@ -1,7 +1,6 @@
 #ifndef _MALLOC_H
 #define _MALLOC_H
 
-#include "../libft/libft.h"
 #include <sys/types.h>
 # include <unistd.h>
 # include <sys/mman.h>
@@ -10,7 +9,6 @@
 # include <stddef.h>
 # include <string.h>
 # include <stdlib.h>
-#include <sys/_types/_uintptr_t.h>
 #include <pthread.h>
 
 # include <assert.h>
@@ -75,13 +73,11 @@
 
 #define METADATA_SIZE(REQUESTED_SIZE) (ARENA_HEADER_SIZE + BIN_HEADER_SIZE + REQUESTED_SIZE)
 
-#define ROUND_TO_MULTIPLE_OF_16(x) (((x) + 15) & ~0xF)
-
-#define ALIGN4(x) (((( (x) - 1) >> 2) << 2 ) + 4 )
-
-#define ALIGN8(x) (((( (x) - 1) >> 3) << 3) + 8 )
+#define ALIGN8(x) (((( (x) - 1) >> 3) << 3) + 8)
 
 # define  GET_BIN_SIZE(type) (type == TINY ? TINY_PAGE : SMALL_PAGE)
+
+typedef unsigned long long  t_ull;
 
 typedef enum        e_bool
 {
@@ -104,8 +100,6 @@ typedef struct s_bin {
     struct s_arena  *parent_arena;
 }				    t_bin;
 
-
-
 typedef struct	s_arena {
 	struct s_arena	*next;
     struct s_arena	*prev;
@@ -117,22 +111,19 @@ typedef struct	s_arena {
 	size_t			free_size;
 }				    t_arena;
 
-t_arena         *global_arena;
+extern t_arena         *g_arena;
+extern pthread_mutex_t g_mallocMutex;
 
 void            *malloc(size_t size);
-void            *safe_malloc(size_t size);
 void            *my_malloc(size_t size);
 
 void            free(void* ptr);
-void            safe_free(void* ptr);
 void            my_free(void* ptr);
 
 void            *calloc(size_t count, size_t size);
-void            *safe_calloc(size_t count, size_t size);
 void            *my_calloc(size_t count, size_t size);
 
 void            *realloc(void *ptr, size_t size);
-void            *safe_realloc(void *ptr, size_t size);
 void            *my_realloc(void *ptr, size_t size);
 
 t_bool          check_sys_limit(size_t size);
@@ -164,7 +155,7 @@ t_bin           *create_new_arena(t_bins_type bins_type, size_t size);
 t_bool          is_within_the_heap(void *ptr);
 
 unsigned int    generateMagicNumber(t_arena *parent_arena);
-t_bool         is_magic_number_valid(t_bin *bin);
+t_bool          is_magic_number_valid(t_bin *bin);
 
 
 t_bool          free_large_bin(void* bin);
@@ -172,5 +163,14 @@ t_bool          free_tiny_small_bin(void* bin);
 t_bin           *coalesce_adjacent_free_bins(t_bin* curr_free_bin);
 
 
-t_bool is_out_of_arena_boundary(t_arena* arena, size_t size);
+t_bool          is_out_of_arena_boundary(t_arena* arena, size_t size);
+
+void            *ft_memcpy(void *dst, const void *src, size_t n);
+void            *ft_memset(void *b, int c, size_t len);
+size_t          ft_strlen(const char *s);
+int             ft_islower(int c);
+void            ft_strupper(char *str);
+int             ft_putchar(char c);
+int             ft_putstr(char const *s);
+char            *to_hexa(t_ull nbr);
 #endif

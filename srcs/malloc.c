@@ -1,5 +1,8 @@
 #include "../inc/malloc.h"
 
+pthread_mutex_t g_mallocMutex = PTHREAD_MUTEX_INITIALIZER;
+t_arena *g_arena = NULL;
+
 t_bins_type get_bins_type(size_t size) {
   if (IS_TINY(size))
     return TINY;
@@ -14,7 +17,8 @@ void *my_malloc(size_t size) {
     return NULL;
 
   // Align the size to the nearest multiple of the page size
-  size = ALIGN8(size);
+   size = ALIGN8(size);
+  // size = ROUND_TO_MULTIPLE_OF_16(size);
 
   t_bins_type bins_type = get_bins_type(size);
 
@@ -34,4 +38,11 @@ void *my_malloc(size_t size) {
   t_bin *new_bin = create_new_arena(bins_type, size);
 
   return (new_bin) ? (void *)(new_bin + 1) : NULL;
+}
+
+void    *malloc(size_t size) {
+     pthread_mutex_lock(&g_mallocMutex);
+    void* ptr = my_malloc(size);
+    pthread_mutex_unlock(&g_mallocMutex);
+    return ptr;
 }

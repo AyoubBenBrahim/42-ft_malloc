@@ -1,7 +1,4 @@
 #include "../inc/malloc.h"
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 t_bool is_out_of_arena_boundary(t_arena *arena, size_t size) {
   t_bin *last_prev = get_last_bin_in_arena(arena, arena->bin_type);
@@ -44,7 +41,7 @@ t_bool split_bin(t_bin *best_fit_bin, size_t size) // refer to Marwan Burelle's 
 }
 
 t_arena *find_best_fit_arena(t_bins_type binType, size_t size) {
-  t_arena *curr_arena = global_arena;
+  t_arena *curr_arena = g_arena;
   t_arena *best_fit_arena = NULL;
 
   if (curr_arena == NULL)

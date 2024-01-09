@@ -26,18 +26,18 @@ t_bin *create_new_arena(t_bins_type bins_type, size_t size) {
 
   // Add the new arena to the list of arenas
 
-  if (!global_arena) {
-    ASSERT(global_arena == NULL);
+  if (!g_arena) {
+    ASSERT(g_arena == NULL);
 
-    global_arena = new_arena;
-    global_arena->tail = new_arena;
+    g_arena = new_arena;
+    g_arena->tail = new_arena;
 
   } else {
-    ASSERT(global_arena != NULL);
+    ASSERT(g_arena != NULL);
 
-    new_arena->prev = global_arena->tail;
-    global_arena->tail->next = new_arena;
-    global_arena->tail = new_arena;
+    new_arena->prev = g_arena->tail;
+    g_arena->tail->next = new_arena;
+    g_arena->tail = new_arena;
   }
   return new_bin;
 }
