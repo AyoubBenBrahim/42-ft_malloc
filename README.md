@@ -11,7 +11,7 @@ Each process in a multi-tasking OS runs in its own memory sandbox.
  This sandbox is the virtual address space, which in 32-bit mode is always a 4GB block of memory addresses.
 These virtual addresses are mapped to physical memory by page tables, which are maintained by the operating
 system kernel and consulted by the processor. Each process has its own set of page tables, but there is a catch.
- Once virtual addresses are enabled, they apply to all software running in the machine, including the kernel itself.
+Once virtual addresses are enabled, they apply to all software running in the machine, including the kernel itself.
 
  kernel space is constantly present and maps the same physical memory in all processes. 
 ```
@@ -39,7 +39,6 @@ the program break is the first location after the end of the uninitialized data 
 This is done via the brk() system call, which changes the point where the data segment "breaks"/ends.
 malloc-s use sbrk for small allocations, mmap for large ones.
 
-[figure1]
 
 Resizing the heap (allocating or deallocating memory) is actually as simple as telling the kernel to adjust its idea of where the process’s program break is. Initially, the program break lies just past the end of the uninitialized data segment (the same location as &end, shown in Figure2
 
@@ -49,9 +48,11 @@ https://github.com/shichao-an/notes/blob/master/docs/tlpi/ch7.md
 
 The program break is the address of the first location beyond the current end of the data region of the program in the virual memory.
 
-sbrk() increments the program's data space  by  increment  bytes.   Calling
-       sbrk()  with  an increment of 0 can be used to find the current location of
-       the program break.
+```
+sbrk() increments the program's data space  by  increment  bytes.  
+Calling sbrk()  with  an increment of 0 can be used to find the current location of
+the program break.
+```
 
 
 ```
@@ -74,14 +75,15 @@ int main() {
 ```
 
 
-
+```
    0x000055ada8136152 <+13>:	callq  0x55ada8136040 <sbrk@plt>
    0x000055ada8136157 <+18>:	mov    %rax,-0x8(%rbp)
 => 0x000055ada813615b <+22>:	lea    0x2ed6(%rip),%rax
-
+```
 
 analyse the result
 
+```
 (gdb) i r rax
 rax 0x55ada9156000
 
@@ -90,25 +92,29 @@ $9 = (<data variable, no debug info> *) 0x55ada8139038 <completed>
 
 (gdb) p 0x55ada9156000 - 0x55ada8139038
 $11 = 16895944
+```
 
-From the GDB output you provided, we can analyze the results as follows:
-
+From the GDB output, we can analyze the results as follows:
+```
 (gdb) info registers rax
 The value stored in the %rax register is 0x55ada9156000. This value represents the address returned by the brk system call.
-
+```
+```
 (gdb) print &_edata
 The address of the _edata symbol is 0x55ada8139038. This symbol typically represents the end of the data section in the program's memory layout.
-
+```
+```
 (gdb) p 0x55ada9156000 - 0x55ada8139038
 The result of subtracting the address of _edata from the value in %rax is 16895944. This difference indicates the amount of memory that was dynamically allocated using the brk system call.
 
 Based on the analysis, it appears that the brk system call was used to allocate approximately 16,895,944 bytes (or 16.1 MB) of memory. This memory was allocated beyond the end of the data section represented by the _edata symbol.
+```
 
 *******
 
 ```
 char* str = (char*) malloc(10);  
-	memset(str, 'A', 9);
+memset(str, 'A', 9);
 ```
 heap
 
@@ -125,7 +131,8 @@ heap
 FTSE: we can solve any prob by introducing an extra lvl of indirection = MMU in this case
 ```
 
-watch Chris Kanich's playlist on youtube on Systems
+
+watch Chris Kanich's playlist on youtube, on Systems
 
 ```
 ptr = malloc(Z)
