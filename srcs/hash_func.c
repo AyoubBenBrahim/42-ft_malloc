@@ -1,6 +1,4 @@
 #include "../inc/malloc.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 #define MAX_CONVERT_SIZE 65
 
@@ -67,7 +65,6 @@ char	*to_binary(t_ull nbr)
 
 unsigned int generateMagicNumber(t_arena *parent_arena) {
     uintptr_t ptr = (uintptr_t)parent_arena;  
-    // ptr = (uintptr_t)89745682;
 
     char *binaryStr = to_binary(ptr);
     unsigned int hash = 2166136261U;

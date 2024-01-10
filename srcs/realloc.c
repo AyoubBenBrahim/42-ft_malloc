@@ -75,7 +75,7 @@ void *my_realloc(void *ptr, size_t size) {
 
   t_bin *bin = (t_bin *)((char *)ptr - sizeof(t_bin));
 
-  if (!is_within_the_heap(bin) || !is_magic_number_valid(bin))
+  if (!is_magic_number_valid(bin))
     return NULL;
 
   if (size == bin->size)

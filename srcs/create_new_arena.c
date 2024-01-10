@@ -11,7 +11,7 @@ t_bin *create_new_arena(t_bins_type bins_type, size_t size) {
   new_arena->prev = NULL;
   new_arena->bin_type = bins_type;
   new_arena->mapped_size = arena_size;
-  new_arena->free_size = new_arena->mapped_size - METADATA_SIZE(size); // recheck
+  new_arena->free_size = new_arena->mapped_size - METADATA_SIZE(size);
 
   t_bin *new_bin = (t_bin *)(new_arena + 1);
 

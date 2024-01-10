@@ -39,7 +39,7 @@ void *my_malloc(size_t size) {
   return (new_bin) ? (void *)(new_bin + 1) : NULL;
 }
 
-void    *ft_malloc(size_t size) {
+void    *malloc(size_t size) {
     pthread_mutex_lock(&g_mallocMutex);
     void* ptr = my_malloc(size);
     pthread_mutex_unlock(&g_mallocMutex);

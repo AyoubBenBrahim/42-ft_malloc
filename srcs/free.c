@@ -1,20 +1,6 @@
 #include "../inc/malloc.h"
-
-t_bool is_within_the_heap(void *ptr) {
-  if (!ptr || !g_arena)
-    return FALSE;
-
-  t_bins_type type = g_arena->tail->bin_type;
-  void *heap_start = g_arena;
-  void *heap_end = g_arena->tail + GET_BIN_SIZE(type);
-
-  if (ptr >= heap_start && ptr <= heap_end) {
-    // ft_printf("ptr %p is in the heap\n", ptr);
-    return TRUE;
-  }
-
-  return FALSE;
-}
+#include <stdio.h>
+#include <stdlib.h>
 
 t_bool is_magic_number_valid(t_bin *bin) {
   unsigned int expectedMagicNumber = generateMagicNumber(bin->parent_arena);
@@ -74,7 +60,6 @@ void free_arena(t_bin *bin) {
   int ret = munmap((void *)arena, arena->mapped_size);
 
   if (ret == -1) {
-    // ft_printf("munmap failed\n");
     return;
   }
 }
@@ -97,8 +82,7 @@ void my_free(void *ptr) {
 
   t_bin *bin = (t_bin *)((char *)ptr - sizeof(t_bin));
 
-  if (!is_within_the_heap(bin) || !is_magic_number_valid(bin)) {
-    // ft_printf("***************INVALID PTR *********\n");
+  if (!is_magic_number_valid(bin)) {
     return;
   }
 
