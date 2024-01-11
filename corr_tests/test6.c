@@ -1,5 +1,3 @@
-#include <stdlib.h>
-#include <unistd.h>
 #include "../inc/malloc.h"
 
 int main()
@@ -18,6 +16,5 @@ int main()
     malloc(1024 * 1024 * 16);
     malloc(1024 * 1024 * 128);
     show_alloc_mem();
-    // show_alloc_mem_ex(q, 1);
     return (0); 
 }

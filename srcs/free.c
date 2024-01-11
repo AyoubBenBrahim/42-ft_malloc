@@ -79,6 +79,9 @@ t_bool free_tiny_small_bin(void *bin) {
 }
 
 void my_free(void *ptr) {
+  if (!ptr || !g_arena) {
+    return;
+  }
 
   t_bin *bin = (t_bin *)((char *)ptr - sizeof(t_bin));
 

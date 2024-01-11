@@ -2,54 +2,56 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-# NAME = libft_malloc_$(HOSTTYPE).so
-# DYNAMIC_LIB = libft_malloc.so
-NAME	=	ft_malloccccc
+NAME		=	libft_malloc_$(HOSTTYPE).so
+DYNAMIC_LIB =	libft_malloc.so
 
-CC = gcc
-CFLAGS = -Werror -Wextra -Wall -g #-fPIC
-FUNCTIONS =	best_fit.c \
-			calloc.c \
-			create_new_arena.c \
-			free.c \
-			hash_func.c \
-			helpers.c \
-			malloc.c \
-			memory_dump.c \
-			new_mmap.c \
-			realloc.c \
-			main.c 
+CC			=	gcc
 
-HEADERS = inc/malloc.h
-OBJDIR = objs
-SRCDIR = srcs
-OBJS = $(addprefix $(OBJDIR)/,$(FUNCTIONS:%.c=%.o))
+CFLAGS		=	-Werror -Wextra -Wall -g -fPIC
 
-all: $(NAME)
+FUNCTIONS	=	best_fit.c \
+				calloc.c \
+				create_new_arena.c \
+				free.c \
+				hash_func.c \
+				helpers.c \
+				malloc.c \
+				memory_dump.c \
+				new_mmap.c \
+				realloc.c \
+				reallocf.c
+				
 
-$(OBJDIR):
-	@echo "malloc Building............"
-	@mkdir -p $(OBJDIR)
+HEADERS		=	inc/malloc.h
+OBJDIR		=	objs
+SRCDIR		=	srcs
+OBJS		=	$(addprefix $(OBJDIR)/,$(FUNCTIONS:%.c=%.o))
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS)
-	@$(CC) $(CFLAGS) -c $< -I./inc -o $@ 
+all			:	$(NAME)
 
-$(NAME): $(OBJDIR) $(OBJS) $(HEADERS)
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
-# @rm -rf $(DYNAMIC_LIB)
-# @ln -s $(NAME) $(DYNAMIC_LIB)
-	@echo "\033[44m\033[93m\033[21mmalloc lib Built Successfully ............[OK]\033[49m\033[93m\n"
+$(OBJDIR)	:
+				@echo "malloc Building............"
+				@mkdir -p $(OBJDIR)
 
-clean:
-	@rm -rf $(OBJDIR)
-	@echo "\033[41m\033[39m\033[1mRemoving malloc lib Objects...[OK]\033[49m\033[93m"
+$(OBJDIR)/%.o:	$(SRCDIR)/%.c $(HEADERS)
+				@$(CC) $(CFLAGS) -c $< -I./inc -o $@ 
 
-fclean: clean
-	@rm -rf $(NAME)
-	@rm -rf $(DYNAMIC_LIB)
-	@rm -rf *.so
-	@rm -rf *dSYM
+$(NAME)		:	$(OBJDIR) $(OBJS) $(HEADERS)
+				@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)  -shared
+				@rm -rf $(DYNAMIC_LIB)
+				@ln -s $(NAME) $(DYNAMIC_LIB)
+				@echo "\033[44m\033[93m\033[21mmalloc lib Built Successfully ............[OK]\033[49m\033[93m\n"
 
-re: fclean all
+clean		:
+				@rm -rf $(OBJDIR)
+				@echo "\033[41m\033[39m\033[1mRemoving malloc lib Objects...[OK]\033[49m\033[93m"
 
-.PHONY: all clean fclean re
+fclean		:	clean
+				@rm -rf $(NAME)
+				@rm -rf $(DYNAMIC_LIB)
+				@rm -rf *.so
+				@rm -rf *dSYM
+
+re			:	fclean all
+
+.PHONY		:	all clean fclean re

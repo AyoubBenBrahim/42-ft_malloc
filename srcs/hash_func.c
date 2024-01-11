@@ -21,7 +21,9 @@ char		*shift_bits(t_ull nbr, int mask, int shift)
 	char *str = "0123456789abcdef";
 
     for (int i = 0; i < MAX_CONVERT_SIZE; i++)
+	{
         convert[i] = '\0';
+	}
 
 	len = nbase_length(nbr, shift);
 
@@ -64,7 +66,7 @@ char	*to_binary(t_ull nbr)
 }
 
 unsigned int generateMagicNumber(t_arena *parent_arena) {
-    uintptr_t ptr = (uintptr_t)parent_arena;  
+    uintptr_t ptr = (uintptr_t)parent_arena;
 
     char *binaryStr = to_binary(ptr);
     unsigned int hash = 2166136261U;
@@ -76,9 +78,3 @@ unsigned int generateMagicNumber(t_arena *parent_arena) {
 
     return hash;
 }
-
-// int main(){
-   
-//     generateMagicNumber(NULL);
-   
-// }
