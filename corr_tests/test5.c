@@ -1,13 +1,37 @@
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdio.h>
 
-#include "../inc/malloc.h"
-
-int	main(void)
+void print(char *s)
 {
-	malloc(1024);
-	malloc(1024 * 32);
-	malloc(1024 * 1024);
-	malloc(1024 * 1024 * 16);
-	malloc(1024 * 1024 * 128);
-	show_alloc_mem();
-	return (0);
+    write(1, s, strlen(s));
+}
+
+int     main()
+{
+    int     i;
+    int     alignment;
+    char    *addr;
+
+    i = 1;
+    alignment = 2 * sizeof(size_t);
+    while (i <= 100)
+    {
+        addr = (char*)malloc(i);
+        if (addr == NULL)
+        {
+            print("Failed to allocate memory\n");
+            exit(1);
+        }
+
+        if ((((unsigned long) (addr)) % alignment) != 0)
+        {
+            printf("i = %d\n", i);
+            print("malloc returned a non aligned boundary\n");
+            exit(1);
+        }
+        i++;
+        free(addr);
+    }
 }

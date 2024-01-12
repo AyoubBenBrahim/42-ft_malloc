@@ -72,6 +72,7 @@
 
 #define     METADATA_SIZE(REQUESTED_SIZE) (ARENA_HEADER_SIZE + BIN_HEADER_SIZE + REQUESTED_SIZE)
 
+// when testing on vscode (test5.c) with alignment 8, it fails, but works on iterm fine !!!
 #define     ALIGN8(x) (((( (x) - 1) >> 3) << 3) + 8)
 
 # define    GET_BIN_SIZE(type) (type == TINY ? TINY_PAGE : SMALL_PAGE)
