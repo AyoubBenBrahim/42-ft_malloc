@@ -6,9 +6,12 @@ void print_arenas() {
     ft_putstr("No Arenas\n");
     return;
   }
+
+  ft_putstr("\033[0;41m");
   ft_putstr("\n======== ARENAs GLOBAL HEADER = ");
   ft_putstr(to_hexa((uintptr_t)g_arena));
-  ft_putstr(" =========\n\n");
+  ft_putstr(" =========");
+  ft_putstr("\033[0m\n");
 
   int i = 1;
   while (curr) {
@@ -16,7 +19,6 @@ void print_arenas() {
     ft_putnbr(i++);
     ft_putstr("] ********\n");
 
-  
     ft_putstr(to_hexa((uintptr_t)curr->prev));
     ft_putstr(" --->| ** ");
     ft_putstr(to_hexa((uintptr_t)curr));
@@ -109,6 +111,10 @@ void print_bins() {
     ft_putstr("No Arenas\n");
     return;
   }
+
+  ft_putstr("\033[0;41m");
+  ft_putstr("\n========  LIST OF BINS = ");
+  ft_putstr("\033[0m\n");
 
   int i = 1;
   while (curr) {

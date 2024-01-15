@@ -20,5 +20,5 @@ volumes:
   driver_opts:
     type: 'none'
     o: 'bind'
-    device: '/Users/aybouras/Desktop/ft_malloc_2'
+    device: '/Users/aybouras/Desktop/ft_malloc'
 

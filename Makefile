@@ -2,12 +2,15 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME		=	libft_malloc_$(HOSTTYPE).so
+# NAME		=	libft_malloc_$(HOSTTYPE).so
+NAME 		=	ft_malloc
 DYNAMIC_LIB =	libft_malloc.so
 
 CC			=	gcc
 
-CFLAGS		=	-Werror -Wextra -Wall -g -fPIC
+CFLAGS		=	-Werror -Wextra -Wall -g
+CLIBFLAGS	=	-Werror -Wextra -Wall -g -fPIC
+SHARED		=   #-shared
 
 FUNCTIONS	=	best_fit.c \
 				calloc.c \
@@ -19,7 +22,8 @@ FUNCTIONS	=	best_fit.c \
 				memory_dump.c \
 				new_mmap.c \
 				realloc.c \
-				reallocf.c
+				reallocf.c\
+				main.c
 				
 
 HEADERS		=	inc/malloc.h
@@ -37,9 +41,9 @@ $(OBJDIR)/%.o:	$(SRCDIR)/%.c $(HEADERS)
 				@$(CC) $(CFLAGS) -c $< -I./inc -o $@ 
 
 $(NAME)		:	$(OBJDIR) $(OBJS) $(HEADERS)
-				@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)  -shared
+				@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(SHARED)
 				@rm -rf $(DYNAMIC_LIB)
-				@ln -s $(NAME) $(DYNAMIC_LIB)
+#				@ln -s $(NAME) $(DYNAMIC_LIB)
 				@echo "\033[44m\033[93m\033[21mmalloc lib Built Successfully ............[OK]\033[49m\033[93m\n"
 
 clean		:
