@@ -10,7 +10,7 @@
 
 5. If no suitable free block is found, the allocator needs to request additional memory from the operating system.
 
-6. The allocator invokes the `sbrk` or `brk` system call to extend the size of the heap. This system call adjusts the program's break point, which represents the end of the data segment and the start of the heap.
+6. The allocator invokes the mmap sys call.
 
 7. The kernel updates the memory mapping segment and extends the process's virtual address space to accommodate the increased heap size. The Memory Management Unit (MMU) plays a role in mapping the virtual addresses to physical memory.
 
