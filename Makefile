@@ -1,3 +1,6 @@
+# to test the shared lib uncomment the NAME and DYNAMIC_LIB variables and comment the SHARED variable, use CLIBFLAGS
+# remove the main.c
+
 ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
