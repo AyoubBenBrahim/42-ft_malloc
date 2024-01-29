@@ -132,7 +132,6 @@ FTSE: we can solve any prob by introducing an extra lvl of indirection = MMU in 
 ```
 
 
-watch Chris Kanich's playlist on youtube, on Systems
 
 ```
 ptr = malloc(Z)
