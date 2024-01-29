@@ -18,6 +18,10 @@ https://www.youtube.com/watch?v=bq3_uT5Z424&ab_channel=MythiliVutukuru
 
 https://www.youtube.com/playlist?list=PLOzRYVm0a65dAAfy0d4aRtj5v0OCAvoCY
 
+Virtual Memory بالعربي
+
+https://youtu.be/K_VfBZ9k_hA?list=PLiRL7CfiWlYG0YdUPcaY7R6CjCGrNIZB0
+
 subheap via mmap
 
 ```
