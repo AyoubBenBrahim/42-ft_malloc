@@ -10,6 +10,14 @@ sequential fit algorithms (first fit, next fit, best fit)
 
 [heap rules](https://azeria-labs.com/heap-exploitation-part-1-understanding-the-glibc-heap-implementation/)
 
+mythili vutukuru's lectures
+
+https://www.youtube.com/watch?v=bq3_uT5Z424&ab_channel=MythiliVutukuru
+
+11-12-13
+
+https://www.youtube.com/playlist?list=PLOzRYVm0a65dAAfy0d4aRtj5v0OCAvoCY
+
 subheap via mmap
 
 ```
@@ -64,11 +72,9 @@ While this sometimes occurs (particularly for larger memory blocks) it is genera
 
 
 ```
-For each dynamic
-memory request (e.g. malloc function call in C language or
-new operator in C++/Java language), during the run time,
-the free list is searched sequentially. If an appropriate size
-chunk cannot be found, one bigger has to be split up to
+For each dynamic memory request (e.g. malloc function call in C language or
+new operator in C++/Java language), during the run time, the free list is searched sequentially.
+If an appropriate size chunk cannot be found, one bigger has to be split up to
 provide a chunk with the requested size. Once the dynamic
 memory space (i.e. heap memory) is exhausted, operating
 system’s function call such as sbrk() or brk() is made to
@@ -79,8 +85,7 @@ memory chunks, if available, have to be coalesced with the
 newly freed chunk to form a single large memory chunk.
 
 In this paper, six different well-known
-implementations of malloc and free functions are
-compared.  
+implementations of malloc and free functions are compared.  
 ```
 [source](https://web.archive.org/web/20010615063859id_/http://ksa.iit.edu:80/~cs/publications/LeeW2_May_2000.pdf)
 
