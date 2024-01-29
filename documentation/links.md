@@ -22,6 +22,8 @@ Virtual Memory بالعربي
 
 https://youtu.be/K_VfBZ9k_hA?list=PLiRL7CfiWlYG0YdUPcaY7R6CjCGrNIZB0
 
+watch Chris Kanich's playlist on youtube, on Systems
+
 subheap via mmap
 
 ```
