@@ -138,6 +138,7 @@ this two articles:
  - https://mliezun.github.io/2020/04/11/custom-malloc.html
 
 
+Fragmentation : Hussein Nasser https://www.youtube.com/watch?v=g0nKNhP0j0I
 
 https://codebrowser.dev/glibc/glibc/malloc/malloc.c.html
 
